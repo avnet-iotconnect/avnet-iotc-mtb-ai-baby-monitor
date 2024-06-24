@@ -1,0 +1,34 @@
+{
+    "model_key": "IMAGIMOB_MODEL",
+    "datatype": "float",
+    "cycles_per_op": [
+        [
+            "CONV_2D",
+            4847151
+        ],
+        [
+            "CONV_2D",
+            6491770
+        ],
+        [
+            "CONV_2D",
+            3495946
+        ],
+        [
+            "CONV_2D",
+            1724284
+        ],
+        [
+            "CONV_2D",
+            2178941
+        ],
+        [
+            "MEAN",
+            142412
+        ],
+        [
+            "FULLY_CONNECTED",
+            1755
+        ]
+    ]
+}

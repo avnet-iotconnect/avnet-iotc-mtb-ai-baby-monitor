@@ -1,0 +1,54 @@
+{
+    "app": "ML",
+    "calibration_data": {
+        "active_state": false,
+        "feat_col_count": 1,
+        "feat_col_first": 0,
+        "input_calibration_type": "NPZ",
+        "input_format": "JPEG",
+        "path": "",
+        "target_col_count": 1,
+        "target_col_first": 0
+    },
+    "filetype": "modustoolbox-ml-configurator",
+    "formatVersion": "3",
+    "lastSavedWith": "ML Configurator",
+    "lastSavedWithVersion": "2.0.0",
+    "model": {
+        "framework": "TFLITE",
+        "optimization_ifx": "SIZE",
+        "optimization_tflm": false,
+        "path": "Edge/PDM/baby_cry.h5",
+        "quantization": {
+            "float32": true,
+            "int16x16": false,
+            "int16x8": false,
+            "int8x8": false
+        },
+        "sparsity_tflm": false,
+        "tflm_model_quantization": "FLOAT"
+    },
+    "name": "IMAGIMOB_MODEL",
+    "output_dir": "mtb_ml_gen",
+    "target": "PSoC6",
+    "toolsPackage": "ModusToolbox Machine Learning Pack 2.0.0",
+    "validation": {
+        "feat_col_count": 1,
+        "feat_col_first": 0,
+        "input_format": "JPEG",
+        "input_type": "PRNG",
+        "max_samples": 100,
+        "path": "",
+        "quantization": {
+            "float32": true,
+            "int16x16": true,
+            "int16x8": true,
+            "int8x8": true
+        },
+        "target": {
+            "target_quantization": "float"
+        },
+        "target_col_count": 1,
+        "target_col_first": 0
+    }
+}
