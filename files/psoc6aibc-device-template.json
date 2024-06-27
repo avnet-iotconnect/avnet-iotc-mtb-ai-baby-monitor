@@ -1,0 +1,53 @@
+{
+    "code": "psoc6aibc",
+    "name": "psoc6aibc",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "version",
+            "type": "STRING",
+            "description": null,
+            "unit": null
+        },
+        {
+            "name": "class",
+            "type": "STRING",
+            "description": "Recognised AI class - baby_cry or unlabelled",
+            "unit": null
+        },
+        {
+            "name": "confidence",
+            "type": "INTEGER",
+            "description": "Confidence percentage for the recognised class",
+            "unit": null
+        }
+    ],
+    "commands": [
+        {
+            "name": "board-user-led",
+            "command": "board-user-led",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "demo-mode",
+            "command": "demo-mode",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        }
+    ],
+    "messageVersion": "2.1",
+    "msgCode": "XG4EJRH",
+    "greenGrass": "0",
+    "wireless": "0",
+    "properties": {
+        "description": null,
+        "dataFrequency": "5",
+        "fileSupport": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}
