@@ -71,7 +71,6 @@
 // App related
 #include "app_config.h"
 #include "app_task.h"
-#include "iotc_ota.h"
 
 
 #define APP_VERSION "02.01.00"
@@ -108,10 +107,6 @@ static const char* highest_confidence_label = "<uninitialized>";
 static float highest_confidence_value = 0;
 
 static bool is_demo_mode = false;
-
-#ifdef IOTC_OTA_SUPPORT
-static bool is_ota_in_progress = false;
-#endif
 
 static void on_connection_status(IotConnectConnectionStatus status) {
     // Add your own status handling
@@ -203,7 +198,7 @@ static void on_ota(IotclC2dEventData data) {
         printf("OTA resource is invalid.\r\n");
         return;
     }
-    printf("unimplemented OTA download request for https://%s%s.\n", ota_host, ota_path);
+    printf("OTA download request received for https://%s%s, but it is not implemented.\n", ota_host, ota_path);
 }
 
 // returns success on matching the expected format. Returns is_on, assuming "on" for true, "off" for false
