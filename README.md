@@ -22,7 +22,7 @@ and note the following:
 - If using the model generator, you will need to install QEMU and set up the relevant environment variables
     per [Machine Learning User Guide](https://www.infineon.com/dgdl/Infineon-Infineon-ModusToolbox_Machine_Learning_User_Guide-UserManual-v02_00-EN-UserManual-v09_00-EN.pdf?fileId=8ac78c8c83cd308101840de7e95a09df)
 - OTA is not supported.
-- Use the [psoc6aiimu-device-template.json Device Template](files/psoc6aiimu-device-template.json) instead of the Basic Sample's template.
+- Use the [psoc6aibc-device-template.json Device Template](files/psoc6aibc-device-template.json) instead of the Basic Sample's template.
 
 
 ## Running the Demo
