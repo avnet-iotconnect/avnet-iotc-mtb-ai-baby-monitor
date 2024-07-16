@@ -1,0 +1,401 @@
+{
+    "ddType": 1,
+    "items": [
+        {
+            "widgetGuid": "A8CB394D-15B1-42C9-94FC-AD7BDC599E2A",
+            "widgetProperties": {
+                "i": "Image",
+                "background": "#FFFFFF",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "10",
+                "title": "",
+                "titleAlign": "",
+                "contents": {
+                    "option": {
+                        "imageUpload": "false",
+                        "imageUrl": "true",
+                        "imageDevice": "false",
+                        "imageTelemetry": "false",
+                        "key": "option",
+                        "position": "stretch"
+                    },
+                    "upload": {
+                        "imageurl": "",
+                        "key": "upload"
+                    },
+                    "url": {
+                        "imageurl": "https://saleshosted.z13.web.core.windows.net/media/ifx/psoc6AI/babytitle.png",
+                        "key": "url"
+                    },
+                    "device": {
+                        "deviceGuid": "",
+                        "deviceName": "",
+                        "imageurl": "",
+                        "key": "device"
+                    },
+                    "telemetry": {
+                        "deviceGuid": "",
+                        "deviceName": "",
+                        "imageurl": "",
+                        "key": "telemetry"
+                    }
+                }
+            },
+            "properties": {
+                "x": "0",
+                "y": "0",
+                "w": "44",
+                "h": "6",
+                "i": "Image",
+                "minW": "5",
+                "minH": "5",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "6FEFF6B7-15C4-4095-A156-87A1B38D2FF5",
+            "widgetProperties": {
+                "i": "Transformation",
+                "background": "#ffffff",
+                "fontColor": "#ffffff",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "10",
+                "title": "Transformation",
+                "titleAlign": "",
+                "contents": {
+                    "Transformation": {
+                        "device": {
+                            "deviceGuid": "8F44AF11-29C0-409A-B189-AADA0D826EEE",
+                            "deviceUniqueId": "psoc6-bc-f5af2e24"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "9C5A805E-E4EA-49E7-9ABF-2B0AF0004311",
+                                    "attributeName": "confidence",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "100",
+                                    "deviceUpdatedDate": "2024-07-11T05:00:55.973Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "100"
+                                },
+                                {
+                                    "attributeGuid": "157FD718-1883-45B7-9FA2-933D9E3D0F28",
+                                    "attributeName": "version",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "02.01.00",
+                                    "deviceUpdatedDate": "2024-07-11T05:00:55.973Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "02.01.00"
+                                },
+                                {
+                                    "attributeGuid": "87269F19-5976-4CAF-AE0C-BA2B727468D1",
+                                    "attributeName": "class",
+                                    "checked": "true",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "quiet",
+                                    "deviceUpdatedDate": "2024-07-11T05:00:55.973Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "quiet"
+                                }
+                            ]
+                        },
+                        "key": "Transformation",
+                        "transformations": [
+                            {
+                                "condition": "eq",
+                                "conditionValue": "baby_cry",
+                                "type": "Url",
+                                "errors": "",
+                                "typeValue": "https://saleshosted.z13.web.core.windows.net/media/ifx/psoc6AI/crying.gif"
+                            },
+                            {
+                                "condition": "ne",
+                                "conditionValue": "baby_cry",
+                                "type": "Url",
+                                "errors": "",
+                                "typeValue": "https://saleshosted.z13.web.core.windows.net/media/ifx/psoc6AI/quiet1.gif"
+                            }
+                        ],
+                        "position": "center"
+                    }
+                }
+            },
+            "properties": {
+                "x": "0",
+                "y": "6",
+                "w": "18",
+                "h": "17",
+                "i": "Transformation",
+                "minW": "7",
+                "minH": "4",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "54D7CC1A-AB35-499E-85D7-2BC3D17526B0",
+            "widgetProperties": {
+                "i": "pie",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "Cry vs. Quiet",
+                "titleAlign": "",
+                "contents": {
+                    "pie": {
+                        "device": {
+                            "deviceGuid": "8F44AF11-29C0-409A-B189-AADA0D826EEE",
+                            "deviceUniqueId": "psoc6-bc-f5af2e24"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "9C5A805E-E4EA-49E7-9ABF-2B0AF0004311",
+                                    "attributeName": "confidence",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "99",
+                                    "deviceUpdatedDate": "2024-07-11T03:59:44.997Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "99"
+                                },
+                                {
+                                    "attributeGuid": "157FD718-1883-45B7-9FA2-933D9E3D0F28",
+                                    "attributeName": "version",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "02.01.00",
+                                    "deviceUpdatedDate": "2024-07-11T03:59:44.997Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "02.01.00"
+                                },
+                                {
+                                    "attributeGuid": "87269F19-5976-4CAF-AE0C-BA2B727468D1",
+                                    "attributeName": "class",
+                                    "checked": "true",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "quiet",
+                                    "deviceUpdatedDate": "2024-07-11T03:59:44.997Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "quiet"
+                                }
+                            ]
+                        },
+                        "pieTime": "50",
+                        "key": "pie",
+                        "recentEndPoints": "15"
+                    }
+                }
+            },
+            "properties": {
+                "x": "18",
+                "y": "6",
+                "w": "10",
+                "h": "8",
+                "i": "pie",
+                "minW": "8",
+                "minH": "8",
+                "maxH": "12",
+                "maxW": "12",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "E1C837D5-D575-44AB-8D1D-EEFBB3DF5940",
+            "widgetProperties": {
+                "i": "Embedded",
+                "background": "#ffffff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "Baby Simulator",
+                "titleAlign": "center",
+                "contents": {
+                    "embedded": {
+                        "link": "https://www.youtube.com/embed/F-Orz42dxLw?si=VBQ9pliBYsY69c7B",
+                        "refresh": "",
+                        "key": "embedded"
+                    }
+                }
+            },
+            "properties": {
+                "x": "28",
+                "y": "6",
+                "w": "16",
+                "h": "12",
+                "i": "Embedded",
+                "minW": "15",
+                "minH": "12",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "21A18C90-2DBC-4283-89D2-B01E1B70E363",
+            "widgetProperties": {
+                "i": "gauge",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "24",
+                "title": "Confidence Factor",
+                "titleAlign": "",
+                "contents": {
+                    "gauge": {
+                        "device": {
+                            "deviceGuid": "8F44AF11-29C0-409A-B189-AADA0D826EEE",
+                            "deviceUniqueId": "psoc6-bc-f5af2e24"
+                        },
+                        "attributes": {
+                            "attribute": {
+                                "attributeGuid": "9C5A805E-E4EA-49E7-9ABF-2B0AF0004311",
+                                "attributeName": "confidence",
+                                "checked": "true",
+                                "dataType": "INTEGER",
+                                "attributeLatestValue": "99",
+                                "deviceUpdatedDate": "2024-07-11T03:59:44.997Z",
+                                "gatewayUpdatedDate": "NA",
+                                "attributeValue": "99"
+                            }
+                        },
+                        "minValue": "0",
+                        "maxValue": "100",
+                        "version": "2.0",
+                        "zones": [
+                            {
+                                "zoneColor": "#d0021b",
+                                "zoneName": "red",
+                                "upToValue": "70",
+                                "showColorPicker": "false"
+                            },
+                            {
+                                "zoneName": "yellow",
+                                "zoneColor": "#f8e71c",
+                                "upToValue": "85",
+                                "showColorPicker": "false"
+                            },
+                            {
+                                "zoneName": "86",
+                                "zoneColor": "#7ed321",
+                                "upToValue": "100",
+                                "showColorPicker": "false"
+                            }
+                        ],
+                        "key": "gauge"
+                    }
+                }
+            },
+            "properties": {
+                "x": "18",
+                "y": "14",
+                "w": "10",
+                "h": "9",
+                "i": "gauge",
+                "minW": "10",
+                "minH": "9",
+                "maxH": "15",
+                "maxW": "16",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "189602F6-0456-4573-9EFA-F6C6B27D7871",
+            "widgetProperties": {
+                "i": "Notifications",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "Notifications",
+                "titleAlign": "",
+                "contents": {
+                    "numberOfRow": {
+                        "row": "10"
+                    },
+                    "matchedDate": {
+                        "fontColor": "#2e71be",
+                        "fontFamily": "Proxima Nova",
+                        "fontSize": "16",
+                        "title": "Date",
+                        "contentTitle": "Matched Date"
+                    },
+                    "eventName": {
+                        "fontColor": "#2e71be",
+                        "fontFamily": "Proxima Nova",
+                        "fontSize": "16",
+                        "title": "Event Name",
+                        "contentTitle": "Event Name"
+                    },
+                    "matchedCondition": {
+                        "fontColor": "#2e71be",
+                        "fontFamily": "Proxima Nova",
+                        "fontSize": "16",
+                        "title": "Condition",
+                        "contentTitle": "Matched Condition"
+                    },
+                    "uniqueId": {
+                        "fontColor": "#2e71be",
+                        "fontFamily": "Proxima Nova",
+                        "fontSize": "16",
+                        "title": "Resource",
+                        "contentTitle": "Resource"
+                    },
+                    "severity": {
+                        "fontColor": "#2e71be",
+                        "fontFamily": "Proxima Nova",
+                        "fontSize": "16",
+                        "title": "Severity",
+                        "contentTitle": "Severity"
+                    }
+                }
+            },
+            "properties": {
+                "x": "28",
+                "y": "18",
+                "w": "16",
+                "h": "15",
+                "i": "Notifications",
+                "minW": "10",
+                "minH": "5",
+                "maxH": "902",
+                "maxW": "838",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "E413CDFD-54EB-465E-BA97-CE610867E440",
+            "widgetProperties": {
+                "i": "DeviceCommand",
+                "background": "#fff",
+                "fontColor": "#000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "Device Command",
+                "titleAlign": "",
+                "contents": {
+                    "deviceCommand": {
+                        "template": "9C745A92-93D2-46B6-A944-5C4CBBAC9707",
+                        "device": "psoc6-bc-f5af2e24",
+                        "key": "deviceCommand",
+                        "deviceGuid": "8F44AF11-29C0-409A-B189-AADA0D826EEE"
+                    }
+                }
+            },
+            "properties": {
+                "x": "0",
+                "y": "23",
+                "w": "28",
+                "h": "10",
+                "i": "DeviceCommand",
+                "minW": "22",
+                "minH": "10",
+                "maxH": "20",
+                "maxW": "35",
+                "isStatic": "false"
+            }
+        }
+    ]
+}
