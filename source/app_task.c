@@ -468,6 +468,9 @@ void app_task(void *pvParameters) {
     printf("Starting The App Task\n");
     printf("===============================================================\n\n");
 
+    extern void gencert_test(void);
+    gencert_test();
+
     if (app_model_init()) {
     	// called function will print the error
         return;
