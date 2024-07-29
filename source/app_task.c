@@ -69,11 +69,22 @@
 
 
 // App related
+#include "app_gencert.h"
+#include "app_eeprom_data.h"
 #include "app_config.h"
 #include "app_task.h"
 
 
 #define APP_VERSION "02.01.00"
+
+typedef enum UserInputYnStatus {
+	APP_INPUT_NONE = 0,
+	APP_INPUT_YES,
+	APP_INPUT_NO
+} UserInputYnStatus;
+
+static UserInputYnStatus user_input_status = APP_INPUT_NONE;
+
 
 // AI Model related values --------------
 // NOTE: The ML code logic in inference.c does not seem to be decoupled from what would be "application logic".
@@ -144,8 +155,8 @@ static cy_rslt_t wifi_connect(void) {
     cy_rslt_t result = CY_RSLT_SUCCESS;
     cy_wcm_connect_params_t connect_param;
     cy_wcm_ip_address_t ip_address;
-    const char* wifi_ssid = WIFI_SSID;
-    const char* wifi_pass = WIFI_PASSWORD;
+    const char* wifi_ssid = app_eeprom_data_get_wifi_ssid(WIFI_SSID);
+    const char* wifi_pass = app_eeprom_data_get_wifi_pass(WIFI_PASSWORD);
 
     /* Check if Wi-Fi connection is already established. */
     if (cy_wcm_is_connected_to_ap() == 0) {
@@ -456,6 +467,29 @@ static void app_model_task(void *pvParameters) {
     }
 }
 
+static void user_input_yn_task (void *pvParameters) {
+	TaskHandle_t *parent_task = pvParameters;
+
+	user_input_status = APP_INPUT_NONE;
+    printf("Do you wish to configure the device?(y/[n]):\n>");
+
+    int ch = getchar();
+    if (EOF == ch) {
+        printf("Got EOF?\n");
+        goto done;
+    }
+    if (ch == 'y' || ch == 'Y') {
+    	user_input_status = APP_INPUT_YES;
+    } else {
+    	user_input_status = APP_INPUT_NO;
+    }
+done:
+	xTaskNotifyGive(*parent_task);
+    while (1) {
+		taskYIELD();
+	}
+}
+
 void app_task(void *pvParameters) {
     (void) pvParameters;
 
@@ -467,9 +501,6 @@ void app_task(void *pvParameters) {
     printf("===============================================================\n");
     printf("Starting The App Task\n");
     printf("===============================================================\n\n");
-
-    extern void gencert_test(void);
-    gencert_test();
 
     if (app_model_init()) {
     	// called function will print the error
@@ -487,16 +518,43 @@ void app_task(void *pvParameters) {
 
     printf("Generated device unique ID (DUID) is: %s\n", iotc_duid);
 
+    if (app_eeprom_data_init()){
+    	printf("App EEPROM data init failed!\r\n");
+    }
+
+    if (0 == strlen(app_eeprom_data_get_certificate(IOTCONNECT_DEVICE_CERT))) {
+	    printf("\nThe board needs to be configured.\n");
+	    app_eeprom_data_do_user_input(iotc_x509_generate_credentials);
+    } else {
+    	// else ask the user if they want to re configure the board. Wait some time for user input...
+    	TaskHandle_t user_input_yn_task_handle;
+        xTaskCreate(user_input_yn_task, "User Input", 1024, &my_task, (my_priority - 1), &user_input_yn_task_handle);
+        ulTaskNotifyTake(pdTRUE, 4000);
+        vTaskDelete(user_input_yn_task_handle);
+
+        switch (user_input_status) {
+        	case  APP_INPUT_NONE:
+        	    printf("Timed out waiting for user input. Resuming...\n");
+        	    break;
+        	case  APP_INPUT_YES:
+        	    app_eeprom_data_do_user_input(iotc_x509_generate_credentials);
+        	    break;
+        	default:
+        	    printf("Bypassing device configuration.\n");
+        	    break;
+        }
+    }
+
     IotConnectClientConfig config;
     iotconnect_sdk_init_config(&config);
-    config.connection_type = IOTCONNECT_CONNECTION_TYPE;
-    config.cpid = IOTCONNECT_CPID;
-    config.env =  IOTCONNECT_ENV;
+    config.connection_type = app_eeprom_data_get_platform(IOTCONNECT_CONNECTION_TYPE);
+    config.cpid = app_eeprom_data_get_cpid(IOTCONNECT_CPID);
+    config.env =  app_eeprom_data_get_env(IOTCONNECT_ENV);
     config.duid = iotc_duid;
     config.qos = 1;
     config.verbose = true;
-    config.x509_config.device_cert = IOTCONNECT_DEVICE_CERT;
-    config.x509_config.device_key = IOTCONNECT_DEVICE_KEY;
+    config.x509_config.device_cert = app_eeprom_data_get_certificate(IOTCONNECT_DEVICE_CERT);
+    config.x509_config.device_cert = app_eeprom_data_get_private_key(IOTCONNECT_DEVICE_KEY);
     config.callbacks.status_cb = on_connection_status;
     config.callbacks.cmd_cb = on_command;
     config.callbacks.ota_cb = on_ota;
@@ -514,6 +572,9 @@ void app_task(void *pvParameters) {
     printf("CPID: %s\n", config.cpid);
     printf("ENV: %s\n", config.env);
     printf("WiFi SSID: %s\n", WIFI_SSID);
+    if (NULL != app_eeprom_data_get_certificate(NULL)) {
+        printf("Device certificate:\n%s\n", app_eeprom_data_get_certificate(NULL));
+    }
 
     cy_wcm_config_t wcm_config = { .interface = CY_WCM_INTERFACE_TYPE_STA };
     if (CY_RSLT_SUCCESS != cy_wcm_init(&wcm_config)) {
