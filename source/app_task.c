@@ -114,8 +114,9 @@ static const char* LABELS[IMAI_PDM_DATA_OUT_COUNT] = IMAI_PDM_SYMBOL_MAP;
 // Telemetry-releate app variables:
 // There is a small chance that label and value will not be atomic as combined As this is a demo only,
 // for sake of simplicity, we will not be synchronizing tasks to solve for this issues.
-static const char* highest_confidence_label = "<uninitialized>";
+static size_t highest_confidence_index;
 static float highest_confidence_value = 0;
+static unsigned int highest_confidence_timestamp = 0; // when was the value recorded. Used in the logic to "hold" the value.
 
 static bool is_demo_mode = false;
 
@@ -293,7 +294,7 @@ static cy_rslt_t publish_telemetry(void) {
     // TelemetryAddWith* calls are only required if sending multiple data points in one packet.
     iotcl_telemetry_set_string(msg, "version", APP_VERSION);
     iotcl_telemetry_set_number(msg, "random", rand() % 100); // test some random numbers
-    iotcl_telemetry_set_string(msg, "class", highest_confidence_label);
+    iotcl_telemetry_set_string(msg, "class", LABELS[highest_confidence_index]);
     iotcl_telemetry_set_number(msg, "confidence", highest_confidence_value);
 
     iotcl_mqtt_send_telemetry(msg, false);
@@ -334,18 +335,31 @@ static void app_model_output(void) {
         return;
     }
     printf("Highest confidence results:\n");
-	highest_confidence_label = LABELS[0]; // "unlabelled"
-	highest_confidence_value = 0.0f;
+	size_t candidate_index = 0;
+	float candidate_value = 0.0f;
     for (uint8_t i = 0; i < model_output_size; i++)
     {
 		float this_value = 100.0f * nn_float_buffer[i];
-		if (highest_confidence_value < this_value) {
-			highest_confidence_label = LABELS[i];
-			highest_confidence_value = this_value;
+		if (candidate_value < this_value) {
+			candidate_value = this_value;
+			candidate_index = i;
 		}
 		if (this_value > 25.0f) {
 			printf("%-8s: %6.2f%%\n", LABELS[i], this_value);
 		}
+    }
+    unsigned int time_now = xTaskGetTickCount() * portTICK_PERIOD_MS;
+    if (candidate_index == 0 && highest_confidence_index != 0) {
+    	// case where we detected unlabelled, but had an actual detection previously....
+    	// Wait until some time before resetting the value. We want to report the last actual detection for some time.
+    	if ((time_now - highest_confidence_timestamp) > 5000) {
+    		highest_confidence_index = 0; // Enough time has passed.
+    	}
+    	// else leave the last value there
+    } else {
+    	highest_confidence_index = candidate_index;
+    	highest_confidence_value = candidate_value;
+    	highest_confidence_timestamp = time_now;
     }
 
 #if !COMPONENT_ML_FLOAT32
@@ -554,7 +568,7 @@ void app_task(void *pvParameters) {
     config.qos = 1;
     config.verbose = true;
     config.x509_config.device_cert = app_eeprom_data_get_certificate(IOTCONNECT_DEVICE_CERT);
-    config.x509_config.device_cert = app_eeprom_data_get_private_key(IOTCONNECT_DEVICE_KEY);
+    config.x509_config.device_key = app_eeprom_data_get_private_key(IOTCONNECT_DEVICE_KEY);
     config.callbacks.status_cb = on_connection_status;
     config.callbacks.cmd_cb = on_command;
     config.callbacks.ota_cb = on_ota;
@@ -571,10 +585,8 @@ void app_task(void *pvParameters) {
     printf("DUID: %s\n", config.duid);
     printf("CPID: %s\n", config.cpid);
     printf("ENV: %s\n", config.env);
-    printf("WiFi SSID: %s\n", WIFI_SSID);
-    if (NULL != app_eeprom_data_get_certificate(NULL)) {
-        printf("Device certificate:\n%s\n", app_eeprom_data_get_certificate(NULL));
-    }
+    printf("WiFi SSID: %s\n", app_eeprom_data_get_wifi_ssid(WIFI_SSID));
+    printf("Device certificate:\n%s\n", app_eeprom_data_get_certificate(IOTCONNECT_DEVICE_CERT));
 
     cy_wcm_config_t wcm_config = { .interface = CY_WCM_INTERFACE_TYPE_STA };
     if (CY_RSLT_SUCCESS != cy_wcm_init(&wcm_config)) {

@@ -14,7 +14,7 @@
 // from iotconnect.h IotConnectAuthType
 #define IOTCONNECT_AUTH_TYPE IOTC_AT_X509
 
-#define IOTCONNECT_DUID_PREFIX "psoc6-"
+#define IOTCONNECT_DUID_PREFIX "psoc6-bm-"
 
 #define IOTCONNECT_CONNECTION_TYPE IOTC_CT_UNDEFINED
 
