@@ -68,7 +68,7 @@
  * mbedtls_platform_gmtime_r() at compile-time by using the macro
  * MBEDTLS_PLATFORM_GMTIME_R_ALT.
  */
-#undef MBEDTLS_HAVE_TIME_DATE
+// #undef MBEDTLS_HAVE_TIME_DATE
 
 
 /**
