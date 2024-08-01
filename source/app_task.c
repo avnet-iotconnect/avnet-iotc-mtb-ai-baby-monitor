@@ -75,7 +75,7 @@
 #include "app_task.h"
 
 
-#define APP_VERSION "02.01.00"
+#define APP_VERSION "03.00.00"
 
 typedef enum UserInputYnStatus {
 	APP_INPUT_NONE = 0,
@@ -114,7 +114,7 @@ static const char* LABELS[IMAI_PDM_DATA_OUT_COUNT] = IMAI_PDM_SYMBOL_MAP;
 // Telemetry-releate app variables:
 // There is a small chance that label and value will not be atomic as combined As this is a demo only,
 // for sake of simplicity, we will not be synchronizing tasks to solve for this issues.
-static size_t highest_confidence_index;
+static size_t highest_confidence_index = 0;
 static float highest_confidence_value = 0;
 static unsigned int highest_confidence_timestamp = 0; // when was the value recorded. Used in the logic to "hold" the value.
 
@@ -349,13 +349,15 @@ static void app_model_output(void) {
 		}
     }
     unsigned int time_now = xTaskGetTickCount() * portTICK_PERIOD_MS;
-    if (candidate_index == 0 && highest_confidence_index != 0) {
+    if (candidate_index == 0) {
     	// case where we detected unlabelled, but had an actual detection previously....
     	// Wait until some time before resetting the value. We want to report the last actual detection for some time.
-    	if ((time_now - highest_confidence_timestamp) > 5000) {
-    		highest_confidence_index = 0; // Enough time has passed.
+    	if (highest_confidence_index != 0 && ((time_now - highest_confidence_timestamp) > 3000)) {
+			highest_confidence_index = 0; // Enough time has passed, so reset the value
+			highest_confidence_value = candidate_value;
     	}
-    	// else leave the last value there
+    	// else leave the last value there and let it sit there for some time
+    	// while unlabelled class is being detected
     } else {
     	highest_confidence_index = candidate_index;
     	highest_confidence_value = candidate_value;
@@ -535,8 +537,9 @@ void app_task(void *pvParameters) {
     if (app_eeprom_data_init()){
     	printf("App EEPROM data init failed!\r\n");
     }
-
-    if (0 == strlen(app_eeprom_data_get_certificate(IOTCONNECT_DEVICE_CERT))) {
+    if (strlen(IOTCONNECT_DEVICE_CERT) > 0) {
+    	printf("Using the compiled device certificate.\n");
+    } else if (0 == strlen(app_eeprom_data_get_certificate(IOTCONNECT_DEVICE_CERT))) {
 	    printf("\nThe board needs to be configured.\n");
 	    app_eeprom_data_do_user_input(iotc_x509_generate_credentials);
     } else {
@@ -627,7 +630,6 @@ void app_task(void *pvParameters) {
 
         int max_messages = is_demo_mode ? 6000 : 300;
         for (int j = 0; iotconnect_sdk_is_connected() && j < max_messages; j++) {
-            printf("\n"); // to not mix output with Model Task
             cy_rslt_t result = publish_telemetry();
             if (result != CY_RSLT_SUCCESS) {
                 break;
