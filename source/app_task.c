@@ -84,7 +84,7 @@ typedef enum UserInputYnStatus {
 } UserInputYnStatus;
 
 static UserInputYnStatus user_input_status = APP_INPUT_NONE;
-
+static TaskHandle_t model_task_handle = NULL;
 
 // AI Model related values --------------
 // NOTE: The ML code logic in inference.c does not seem to be decoupled from what would be "application logic".
@@ -202,12 +202,12 @@ static cy_rslt_t wifi_connect(void) {
 static void on_ota(IotclC2dEventData data) {
     const char *ota_host = iotcl_c2d_get_ota_url_hostname(data, 0);
     if (ota_host == NULL){
-        printf("OTA host is invalid.\r\n");
+        printf("OTA host is invalid.\n");
         return;
     }
     const char *ota_path = iotcl_c2d_get_ota_url_resource(data, 0);
     if (ota_path == NULL) {
-        printf("OTA resource is invalid.\r\n");
+        printf("OTA resource is invalid.\n");
         return;
     }
     printf("OTA download request received for https://%s%s, but it is not implemented.\n", ota_host, ota_path);
@@ -246,11 +246,13 @@ static bool parse_on_off_command(const char* command, const char* name, bool *ar
 static void on_command(IotclC2dEventData data) {
     const char * const BOARD_STATUS_LED = "board-user-led";
     const char * const DEMO_MODE_CMD = "demo-mode";
+    const char * const QUALIFICATION_START_PREFIX_CMD = "aws-qualification-start "; // with a space
     bool command_success = false;
     const char * message = NULL;
 
     const char *command = iotcl_c2d_get_command(data);
     const char *ack_id = iotcl_c2d_get_ack_id(data);
+
     if (command) {
         bool arg_parsing_success;
         printf("Command %s received with %s ACK ID\n", command, ack_id ? ack_id : "no");
@@ -259,11 +261,14 @@ static void on_command(IotclC2dEventData data) {
         if (parse_on_off_command(command, BOARD_STATUS_LED, &arg_parsing_success, &led_on, &message)) {
             command_success = arg_parsing_success;
             if (arg_parsing_success) {
-            	 // Seems like logic is incerted in the BSP or initialization, so workaround here
-                cyhal_gpio_write(CYBSP_USER_LED, led_on ? CYBSP_LED_STATE_OFF : CYBSP_LED_STATE_ON);
+                cyhal_gpio_write(CYBSP_USER_LED, led_on);
             }
         } else if (parse_on_off_command(command, DEMO_MODE_CMD,  &arg_parsing_success, &is_demo_mode, &message)) {
             command_success = arg_parsing_success;
+        } else if (0 == strncmp(QUALIFICATION_START_PREFIX_CMD, command, strlen(QUALIFICATION_START_PREFIX_CMD))) {
+        	// Qualification has started. Stop the model task
+        	vTaskDelete(model_task_handle);
+        	return;
         } else {
             printf("Unknown command \"%s\"\n", command);
             message = "Unknown command";
@@ -289,9 +294,6 @@ static void on_command(IotclC2dEventData data) {
 
 static cy_rslt_t publish_telemetry(void) {
     IotclMessageHandle msg = iotcl_telemetry_create();
-
-    // Optional. The first time you create a data point, the current timestamp will be automatically added
-    // TelemetryAddWith* calls are only required if sending multiple data points in one packet.
     iotcl_telemetry_set_string(msg, "version", APP_VERSION);
     iotcl_telemetry_set_number(msg, "random", rand() % 100); // test some random numbers
     iotcl_telemetry_set_string(msg, "class", LABELS[highest_confidence_index]);
@@ -334,7 +336,6 @@ static void app_model_output(void) {
         printf("Failed to allocate the model data buffer!\n");
         return;
     }
-    printf("Highest confidence results:\n");
 	size_t candidate_index = 0;
 	float candidate_value = 0.0f;
     for (uint8_t i = 0; i < model_output_size; i++)
@@ -465,7 +466,6 @@ static cy_rslt_t app_model_init(void) {
     return result;
 }
 
-
 static void app_model_task(void *pvParameters) {
     TaskHandle_t *parent_task = pvParameters;
 
@@ -535,7 +535,7 @@ void app_task(void *pvParameters) {
     printf("Generated device unique ID (DUID) is: %s\n", iotc_duid);
 
     if (app_eeprom_data_init()){
-    	printf("App EEPROM data init failed!\r\n");
+    	printf("App EEPROM data init failed!\n");
     }
     if (strlen(IOTCONNECT_DEVICE_CERT) > 0) {
     	printf("Using the compiled device certificate.\n");
@@ -627,7 +627,9 @@ void app_task(void *pvParameters) {
             printf("Failed to initialize the IoTConnect SDK. Error code: %lu\n", ret);
             goto exit_cleanup;
         }
-
+        if (!model_task_handle) {
+        	xTaskCreate(app_model_task, "Model Task", 1024 * 8, &my_task, my_priority + 1, &model_task_handle);
+        }
         int max_messages = is_demo_mode ? 6000 : 300;
         for (int j = 0; iotconnect_sdk_is_connected() && j < max_messages; j++) {
             cy_rslt_t result = publish_telemetry();
@@ -637,7 +639,6 @@ void app_task(void *pvParameters) {
             iotconnect_sdk_poll_inbound_mq(1000);
         }
         iotconnect_sdk_disconnect();
-        vTaskDelete(model_task_handle);
     }
     iotconnect_sdk_deinit();
 
