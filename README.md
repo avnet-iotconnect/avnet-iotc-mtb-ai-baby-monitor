@@ -2,7 +2,7 @@
 
 This demo project is the integration of the 
 Infineon's [Machine learning: Machine learning: Imagimob MTBML deployment](https://github.com/Infineon/mtb-example-ml-imagimob-mtbml-deploy/tree/release-v1.1.0)
-and Avnet's [IoTConnect Modus Toolbox&trade; Basic Sample](https://github.com/avnet-iotconnect/avnet-iotc-mtb-basic-example/tree/v6.0.0)
+and Avnet's [IoTConnect ModusToolbox&trade; Basic Sample](https://github.com/avnet-iotconnect/avnet-iotc-mtb-basic-example/tree/v6.0.0)
 . It demonstrates the ModusToolbox&trade; Machine Learning (MTBML) flow algorithm withbaby crying detection by
 using data from the pulse-density modulation to pulse-code modulation (PDM/PCM) which is sent to the model to detect whether a baby is crying or not.
 The AI model's recognized class is then reported to IoTConnect.
@@ -11,18 +11,23 @@ This project currently supports the [CY8CKIT-062S2-AI](https://www.infineon.com/
 
 The project supports only Eclipse with GCC_ARM compiler.
 
+## Quickstart Guide
+
+If you wish to only evaluate this project, you can follow the Quickstart guide to evaluate this application with IoTConnect.
+
+
 ## Building the Project
 
 To build the project, please refer to the 
-[IoTConnect Modus Toolbox&trade; Basic Sample Developer Guide](https://github.com/avnet-iotconnect/avnet-iotc-mtb-basic-example/tree/release-v6.0.0/DEVELOPER_GUIDE.md) 
+[IoTConnect ModusToolbox&trade; Basic Sample Developer Guide](https://github.com/avnet-iotconnect/avnet-iotc-mtb-basic-example/tree/release-v6.0.0/DEVELOPER_GUIDE.md) 
 and note the following:
-- Once Modus Toolbox has been installed, the 
+- Once ModusToolbox has been installed, the 
     [ModusToolbox&trade; for Machine Learning](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxpackmachinelearning) 
     software should be installed as well.
 - If using the model generator, you will need to install QEMU and set up the relevant environment variables
     per [Machine Learning User Guide](https://www.infineon.com/dgdl/Infineon-Infineon-ModusToolbox_Machine_Learning_User_Guide-UserManual-v02_00-EN-UserManual-v09_00-EN.pdf?fileId=8ac78c8c83cd308101840de7e95a09df)
 - OTA is not supported.
-- Use the [psoc6aibc-device-template.json Device Template](files/psoc6aibc-device-template.json) instead of the Basic Sample's template.
+- Use the [psoc6aibm-device-template.json Device Template](files/psoc6aibm-device-template.json) instead of the Basic Sample's template.
 
 
 ## Running the Demo

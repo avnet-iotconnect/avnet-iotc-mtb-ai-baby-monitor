@@ -69,7 +69,7 @@
 
 
 // App related
-#include "app_gencert.h"
+#include "iotc_gencert.h"
 #include "app_eeprom_data.h"
 #include "app_config.h"
 #include "app_task.h"

@@ -167,13 +167,6 @@ void app_eeprom_data_do_user_input(IotcX509CredentialsGenerate x509_creds_genera
 			printf("ERROR: Unable to generate the device certificate and key pair!\n");
 			return;
 		}
-		printf("########################################################\n");
-		printf("WARNING: This private key will be displayed only once!\n");
-		printf("The certificate and private key will be re-generated if you re-flash the board,\n");
-		printf("and you would need to delete and re-create the device with new credentials in IoTConnect.\n");
-		printf("If you wish to continue use these credentials for your device,\n");
-		printf("you should configure these values in app_config.h and recompile the application.\n");
-		printf("########################################################\n");
     }
 
 	printf("\n===============================================================\n");
