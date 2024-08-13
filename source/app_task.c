@@ -69,11 +69,22 @@
 
 
 // App related
+#include "iotc_gencert.h"
+#include "app_eeprom_data.h"
 #include "app_config.h"
 #include "app_task.h"
 
 
-#define APP_VERSION "02.01.00"
+#define APP_VERSION "03.00.00"
+
+typedef enum UserInputYnStatus {
+	APP_INPUT_NONE = 0,
+	APP_INPUT_YES,
+	APP_INPUT_NO
+} UserInputYnStatus;
+
+static UserInputYnStatus user_input_status = APP_INPUT_NONE;
+static TaskHandle_t model_task_handle = NULL;
 
 // AI Model related values --------------
 // NOTE: The ML code logic in inference.c does not seem to be decoupled from what would be "application logic".
@@ -103,8 +114,9 @@ static const char* LABELS[IMAI_PDM_DATA_OUT_COUNT] = IMAI_PDM_SYMBOL_MAP;
 // Telemetry-releate app variables:
 // There is a small chance that label and value will not be atomic as combined As this is a demo only,
 // for sake of simplicity, we will not be synchronizing tasks to solve for this issues.
-static const char* highest_confidence_label = "<uninitialized>";
+static size_t highest_confidence_index = 0;
 static float highest_confidence_value = 0;
+static unsigned int highest_confidence_timestamp = 0; // when was the value recorded. Used in the logic to "hold" the value.
 
 static bool is_demo_mode = false;
 
@@ -144,8 +156,8 @@ static cy_rslt_t wifi_connect(void) {
     cy_rslt_t result = CY_RSLT_SUCCESS;
     cy_wcm_connect_params_t connect_param;
     cy_wcm_ip_address_t ip_address;
-    const char* wifi_ssid = WIFI_SSID;
-    const char* wifi_pass = WIFI_PASSWORD;
+    const char* wifi_ssid = app_eeprom_data_get_wifi_ssid(WIFI_SSID);
+    const char* wifi_pass = app_eeprom_data_get_wifi_pass(WIFI_PASSWORD);
 
     /* Check if Wi-Fi connection is already established. */
     if (cy_wcm_is_connected_to_ap() == 0) {
@@ -190,12 +202,12 @@ static cy_rslt_t wifi_connect(void) {
 static void on_ota(IotclC2dEventData data) {
     const char *ota_host = iotcl_c2d_get_ota_url_hostname(data, 0);
     if (ota_host == NULL){
-        printf("OTA host is invalid.\r\n");
+        printf("OTA host is invalid.\n");
         return;
     }
     const char *ota_path = iotcl_c2d_get_ota_url_resource(data, 0);
     if (ota_path == NULL) {
-        printf("OTA resource is invalid.\r\n");
+        printf("OTA resource is invalid.\n");
         return;
     }
     printf("OTA download request received for https://%s%s, but it is not implemented.\n", ota_host, ota_path);
@@ -234,11 +246,13 @@ static bool parse_on_off_command(const char* command, const char* name, bool *ar
 static void on_command(IotclC2dEventData data) {
     const char * const BOARD_STATUS_LED = "board-user-led";
     const char * const DEMO_MODE_CMD = "demo-mode";
+    const char * const QUALIFICATION_START_PREFIX_CMD = "aws-qualification-start "; // with a space
     bool command_success = false;
     const char * message = NULL;
 
     const char *command = iotcl_c2d_get_command(data);
     const char *ack_id = iotcl_c2d_get_ack_id(data);
+
     if (command) {
         bool arg_parsing_success;
         printf("Command %s received with %s ACK ID\n", command, ack_id ? ack_id : "no");
@@ -247,11 +261,21 @@ static void on_command(IotclC2dEventData data) {
         if (parse_on_off_command(command, BOARD_STATUS_LED, &arg_parsing_success, &led_on, &message)) {
             command_success = arg_parsing_success;
             if (arg_parsing_success) {
-            	 // Seems like logic is incerted in the BSP or initialization, so workaround here
-                cyhal_gpio_write(CYBSP_USER_LED, led_on ? CYBSP_LED_STATE_OFF : CYBSP_LED_STATE_ON);
+                cyhal_gpio_write(CYBSP_USER_LED, led_on);
             }
         } else if (parse_on_off_command(command, DEMO_MODE_CMD,  &arg_parsing_success, &is_demo_mode, &message)) {
             command_success = arg_parsing_success;
+        } else if (0 == strncmp(QUALIFICATION_START_PREFIX_CMD, command, strlen(QUALIFICATION_START_PREFIX_CMD))) {
+        	// Qualification has started. Stop the model task. See Makefile comments about enabling IOTC_AWS_DEVICE_QUALIFICATION
+        	if (model_task_handle) {
+        		printf("Stopping the model task to start AWS Device Qualification");
+            	vTaskDelete(model_task_handle);
+        	} else {
+        		// Otherwise we will kill the app task with NULL being the argument
+        		printf("Model task is NULL. No task stopped.");
+        	}
+        	// Do not send the
+        	return;
         } else {
             printf("Unknown command \"%s\"\n", command);
             message = "Unknown command";
@@ -277,12 +301,9 @@ static void on_command(IotclC2dEventData data) {
 
 static cy_rslt_t publish_telemetry(void) {
     IotclMessageHandle msg = iotcl_telemetry_create();
-
-    // Optional. The first time you create a data point, the current timestamp will be automatically added
-    // TelemetryAddWith* calls are only required if sending multiple data points in one packet.
     iotcl_telemetry_set_string(msg, "version", APP_VERSION);
     iotcl_telemetry_set_number(msg, "random", rand() % 100); // test some random numbers
-    iotcl_telemetry_set_string(msg, "class", highest_confidence_label);
+    iotcl_telemetry_set_string(msg, "class", LABELS[highest_confidence_index]);
     iotcl_telemetry_set_number(msg, "confidence", highest_confidence_value);
 
     iotcl_mqtt_send_telemetry(msg, false);
@@ -322,19 +343,33 @@ static void app_model_output(void) {
         printf("Failed to allocate the model data buffer!\n");
         return;
     }
-    printf("Highest confidence results:\n");
-	highest_confidence_label = LABELS[0]; // "unlabelled"
-	highest_confidence_value = 0.0f;
+	size_t candidate_index = 0;
+	float candidate_value = 0.0f;
     for (uint8_t i = 0; i < model_output_size; i++)
     {
 		float this_value = 100.0f * nn_float_buffer[i];
-		if (highest_confidence_value < this_value) {
-			highest_confidence_label = LABELS[i];
-			highest_confidence_value = this_value;
+		if (candidate_value < this_value) {
+			candidate_value = this_value;
+			candidate_index = i;
 		}
 		if (this_value > 25.0f) {
 			printf("%-8s: %6.2f%%\n", LABELS[i], this_value);
 		}
+    }
+    unsigned int time_now = xTaskGetTickCount() * portTICK_PERIOD_MS;
+    if (candidate_index == 0) {
+    	// case where we detected unlabelled, but had an actual detection previously....
+    	// Wait until some time before resetting the value. We want to report the last actual detection for some time.
+    	if (highest_confidence_index != 0 && ((time_now - highest_confidence_timestamp) > 3000)) {
+			highest_confidence_index = 0; // Enough time has passed, so reset the value
+			highest_confidence_value = candidate_value;
+    	}
+    	// else leave the last value there and let it sit there for some time
+    	// while unlabelled class is being detected
+    } else {
+    	highest_confidence_index = candidate_index;
+    	highest_confidence_value = candidate_value;
+    	highest_confidence_timestamp = time_now;
     }
 
 #if !COMPONENT_ML_FLOAT32
@@ -438,7 +473,6 @@ static cy_rslt_t app_model_init(void) {
     return result;
 }
 
-
 static void app_model_task(void *pvParameters) {
     TaskHandle_t *parent_task = pvParameters;
 
@@ -454,6 +488,29 @@ static void app_model_task(void *pvParameters) {
     while (1) {
         taskYIELD();
     }
+}
+
+static void user_input_yn_task (void *pvParameters) {
+	TaskHandle_t *parent_task = pvParameters;
+
+	user_input_status = APP_INPUT_NONE;
+    printf("Do you wish to configure the device?(y/[n]):\n>");
+
+    int ch = getchar();
+    if (EOF == ch) {
+        printf("Got EOF?\n");
+        goto done;
+    }
+    if (ch == 'y' || ch == 'Y') {
+    	user_input_status = APP_INPUT_YES;
+    } else {
+    	user_input_status = APP_INPUT_NO;
+    }
+done:
+	xTaskNotifyGive(*parent_task);
+    while (1) {
+		taskYIELD();
+	}
 }
 
 void app_task(void *pvParameters) {
@@ -484,16 +541,44 @@ void app_task(void *pvParameters) {
 
     printf("Generated device unique ID (DUID) is: %s\n", iotc_duid);
 
+    if (app_eeprom_data_init()){
+    	printf("App EEPROM data init failed!\n");
+    }
+    if (strlen(IOTCONNECT_DEVICE_CERT) > 0) {
+    	printf("Using the compiled device certificate.\n");
+    } else if (0 == strlen(app_eeprom_data_get_certificate(IOTCONNECT_DEVICE_CERT))) {
+	    printf("\nThe board needs to be configured.\n");
+	    app_eeprom_data_do_user_input(iotc_x509_generate_credentials);
+    } else {
+    	// else ask the user if they want to re configure the board. Wait some time for user input...
+    	TaskHandle_t user_input_yn_task_handle;
+        xTaskCreate(user_input_yn_task, "User Input", 1024, &my_task, (my_priority - 1), &user_input_yn_task_handle);
+        ulTaskNotifyTake(pdTRUE, 4000);
+        vTaskDelete(user_input_yn_task_handle);
+
+        switch (user_input_status) {
+        	case  APP_INPUT_NONE:
+        	    printf("Timed out waiting for user input. Resuming...\n");
+        	    break;
+        	case  APP_INPUT_YES:
+        	    app_eeprom_data_do_user_input(iotc_x509_generate_credentials);
+        	    break;
+        	default:
+        	    printf("Bypassing device configuration.\n");
+        	    break;
+        }
+    }
+
     IotConnectClientConfig config;
     iotconnect_sdk_init_config(&config);
-    config.connection_type = IOTCONNECT_CONNECTION_TYPE;
-    config.cpid = IOTCONNECT_CPID;
-    config.env =  IOTCONNECT_ENV;
+    config.connection_type = app_eeprom_data_get_platform(IOTCONNECT_CONNECTION_TYPE);
+    config.cpid = app_eeprom_data_get_cpid(IOTCONNECT_CPID);
+    config.env =  app_eeprom_data_get_env(IOTCONNECT_ENV);
     config.duid = iotc_duid;
     config.qos = 1;
     config.verbose = true;
-    config.x509_config.device_cert = IOTCONNECT_DEVICE_CERT;
-    config.x509_config.device_key = IOTCONNECT_DEVICE_KEY;
+    config.x509_config.device_cert = app_eeprom_data_get_certificate(IOTCONNECT_DEVICE_CERT);
+    config.x509_config.device_key = app_eeprom_data_get_private_key(IOTCONNECT_DEVICE_KEY);
     config.callbacks.status_cb = on_connection_status;
     config.callbacks.cmd_cb = on_command;
     config.callbacks.ota_cb = on_ota;
@@ -510,7 +595,8 @@ void app_task(void *pvParameters) {
     printf("DUID: %s\n", config.duid);
     printf("CPID: %s\n", config.cpid);
     printf("ENV: %s\n", config.env);
-    printf("WiFi SSID: %s\n", WIFI_SSID);
+    printf("WiFi SSID: %s\n", app_eeprom_data_get_wifi_ssid(WIFI_SSID));
+    printf("Device certificate:\n%s\n", app_eeprom_data_get_certificate(IOTCONNECT_DEVICE_CERT));
 
     cy_wcm_config_t wcm_config = { .interface = CY_WCM_INTERFACE_TYPE_STA };
     if (CY_RSLT_SUCCESS != cy_wcm_init(&wcm_config)) {
@@ -539,7 +625,6 @@ void app_task(void *pvParameters) {
     cyhal_gpio_write(CYBSP_USER_LED, false); // USER_LED is active low
 
     for (int i = 0; i < 10; i++) {
-        TaskHandle_t model_task_handle;
         xTaskCreate(app_model_task, "Model Task", 1024 * 8, &my_task, my_priority + 1, &model_task_handle);
         ulTaskNotifyTake(pdTRUE, 10000);
 
@@ -548,10 +633,11 @@ void app_task(void *pvParameters) {
             printf("Failed to initialize the IoTConnect SDK. Error code: %lu\n", ret);
             goto exit_cleanup;
         }
-
+        if (!model_task_handle) {
+        	xTaskCreate(app_model_task, "Model Task", 1024 * 8, &my_task, my_priority + 1, &model_task_handle);
+        }
         int max_messages = is_demo_mode ? 6000 : 300;
         for (int j = 0; iotconnect_sdk_is_connected() && j < max_messages; j++) {
-            printf("\n"); // to not mix output with Model Task
             cy_rslt_t result = publish_telemetry();
             if (result != CY_RSLT_SUCCESS) {
                 break;
@@ -559,7 +645,6 @@ void app_task(void *pvParameters) {
             iotconnect_sdk_poll_inbound_mq(1000);
         }
         iotconnect_sdk_disconnect();
-        vTaskDelete(model_task_handle);
     }
     iotconnect_sdk_deinit();
 
