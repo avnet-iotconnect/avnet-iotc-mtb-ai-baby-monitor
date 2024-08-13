@@ -270,8 +270,9 @@ DEFINES+=HTTP_DO_NOT_USE_CUSTOM_CONFIG
 # for sntp
 DEFINES+=SNTP_SERVER_DNS
 
-# to enable qualification
-DEFINES+=IOTC_AWS_DEVICE_QUALIFICATION
+# Define to enable qualification code in the SDK
+# This define should NOT be used in production, as it could make your device vulnerable
+# DEFINES+=IOTC_AWS_DEVICE_QUALIFICATION
 
 # Configure response header maximum length with the specified value - HTTP
 DEFINES+=HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES=2048
