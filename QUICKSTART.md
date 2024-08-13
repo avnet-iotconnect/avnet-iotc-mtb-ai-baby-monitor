@@ -46,7 +46,8 @@ Select one of the two implementations of IoTConnect:
 * [AWS Version](https://subscription.iotconnect.io/subscribe?cloud=aws)  (Recommended)
 * [Azure Version](https://subscription.iotconnect.io/subscribe?cloud=azure)  
 
-> **Note:**  Be sure to check any SPAM folder for the temporary password after registering.
+> [!NOTE]
+> Be sure to check any SPAM folder for the temporary password after registering.
 
 See the IoTConnect [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details on the trial.
 
