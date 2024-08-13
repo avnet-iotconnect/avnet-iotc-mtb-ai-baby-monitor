@@ -63,13 +63,15 @@ The Company ID (**CPID**) and Environment (**ENV**) variables identifying your I
 
 ## 9. Configure the Board
 
-> [!NOTE]  There is no local echo in the serial terminal when typing or pasting values (unless you enabled this option in the TeraTerm settings).
+> [!NOTE]  
+> There is no local echo in the serial terminal when typing or pasting values (unless you enabled this option in the TeraTerm settings).
 > If a mistake is made, the board must be reset and this section repeated.
 
 * Verify the following output is visible in the terminal:  `Please enter your device configuration`
 * If not, reset the board.
 
-> [!NOTE] To change an existing configuration reset the board and press `y` and then `ENTER` when prompted.
+> [!NOTE] 
+> To change an existing configuration reset the board and press `y` and then `ENTER` when prompted.
 
 * Enter the **Platform** for which you subscribed: `aws` (for AWS) or `az` (for Azure)
 * Enter the **CPID** acquired from the key vault in Step 8
