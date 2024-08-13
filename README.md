@@ -13,6 +13,8 @@ The project supports only Eclipse with GCC_ARM compiler.
 
 ## Building the Project
 
+[Wacth an Overview](https://saleshosted.z13.web.core.windows.net/media/ifx/videos/IFX%20Modus%20with%20IoTConnect.mp4) of creating a new project with IoTConnect in ModusToolbox.
+
 To build the project, please refer to the 
 [IoTConnect Modus Toolbox&trade; Basic Sample Developer Guide](https://github.com/avnet-iotconnect/avnet-iotc-mtb-basic-example/tree/release-v6.0.0/DEVELOPER_GUIDE.md) 
 and note the following:
