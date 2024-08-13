@@ -36,8 +36,8 @@ This guide has been tested with the following environment, but should work with 
   * Parity: `none`
   * Stop Bits: `1`
   * Flow Control: `none`
-In the Transmit Delay section of the serial port setting, enter 10 for both per-character and per-line delay. 
-* After setup, connect and press **RST** on the board
+  * In the Transmit Delay section of the serial port setting, enter 10 for both per-character and per-line delay. 
+* After setup, connect and reset the board.
 
 ## 7. Cloud Account Setup
 An IoTConnect account is required.  If you need to create an account, a free trial subscription is available.
@@ -63,13 +63,13 @@ The Company ID (**CPID**) and Environment (**ENV**) variables identifying your I
 
 ## 9. Configure the Board
 
-> **Warning:**  There is no local echo in the serial terminal when typing or pasting values (unless you enabled this option in the TeraTerm settings).
+> [!NOTE]  There is no local echo in the serial terminal when typing or pasting values (unless you enabled this option in the TeraTerm settings).
 > If a mistake is made, the board must be reset and this section repeated.
 
 * Verify the following output is visible in the terminal:  `Please enter your device configuration`
 * If not, reset the board.
 
-> **Note:**  To change an existing configuration reset the board and press `y` and then `ENTER` when prompted.
+> [!NOTE] To change an existing configuration reset the board and press `y` and then `ENTER` when prompted.
 
 * Enter the **Platform** for which you subscribed: `aws` (for AWS) or `az` (for Azure)
 * Enter the **CPID** acquired from the key vault in Step 8
@@ -81,11 +81,12 @@ The device will configure itself and reboot.
 
 The application will display the auto-generated certificate from flash upon boot.
 
-> [!NOTE]  
+> [!WARNING]  
 > This certificate will be re-generated every time you re-flash the board because the flash section
-> where the certificate and private key are stored will be overwritten. 
-> In this case you will need to delete your device from IoTConnect and re-create the device with the new certificate.
-> If you wish to avoid this, you should use the Developer Guide and compile in your device credentials.
+> where the certificate and private key are stored will be erased.
+> In this case, you will need to delete your device from IoTConnect and re-create the device with the new certificate.
+> If you wish to avoid this, you should use the Developer Guide and 
+> have your device credentials compiled into the application.
 
 * **Copy** the *Device Certificate* from the terminal including the "BEGIN" and "END" lines.
 * Open a text editor, such as notepad, paste in the certificate, and save the file as `cert.txt`
@@ -152,7 +153,6 @@ An IoTConnect *Device Template* will need to be created or imported. This define
 * After a few seconds, the device will connect, and begin sending telemetry packets similar to the example below:
 
 ```
-Pressure : 841.57 mBar   Temperature: 29.15 øC
 >: {"d":[{"d":{"version":"03.00.00","random":49,"class":"unlabelled","confidence":99.886238098144531}}]}
 ```
 
@@ -170,6 +170,3 @@ Congratulations, your sample dashboard should look similar to the one below:
 
 ## 14. Troubleshooting and Known Issues
 * The board may not be able to obtain time from the NTP server. Resetting the board should re-try the NTP connection and will likely succeed on the next try. 
-* On occasion, the CO2 ppm measurement may not be ready for retrieval. The sensor will report an error and the CO2 level telemetry value will not be reported. This error is transient and can be ignored.
-
-The XENSIV board can operate in different "modes". The board is in the correct mode for programming out of the box. If you encounter issues flashing or configuring the board, verify that the amber LED is solid to confirm the correct mode is enabled. If the amber LED is flashing, press the `KP3_MODE` button on the bottom of the board until the LED is on solid to return to the correct mode.

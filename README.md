@@ -13,7 +13,7 @@ The project supports only Eclipse with GCC_ARM compiler.
 
 ## Quickstart Guide
 
-If you wish to only evaluate this project, you can follow the Quickstart guide to evaluate this application with IoTConnect.
+If you wish to only evaluate this project, you can follow the [Quickstart Guide](QUICKSTART.md) to evaluate this application with IoTConnect.
 
 
 ## Building the Project
