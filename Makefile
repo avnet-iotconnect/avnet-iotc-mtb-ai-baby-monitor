@@ -271,7 +271,8 @@ DEFINES+=HTTP_DO_NOT_USE_CUSTOM_CONFIG
 DEFINES+=SNTP_SERVER_DNS
 
 # Define to enable qualification code in the SDK
-# This define should NOT be used in production, as it could make your device vulnerable
+# This define should NOT be used in production,
+# as it could make your device vulnerable to MITM attacks
 # DEFINES+=IOTC_AWS_DEVICE_QUALIFICATION
 
 # Configure response header maximum length with the specified value - HTTP

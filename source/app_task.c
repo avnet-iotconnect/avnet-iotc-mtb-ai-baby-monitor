@@ -75,7 +75,7 @@
 #include "app_task.h"
 
 
-#define APP_VERSION "02.00.00"
+#define APP_VERSION "03.00.00"
 
 typedef enum UserInputYnStatus {
 	APP_INPUT_NONE = 0,
@@ -266,8 +266,15 @@ static void on_command(IotclC2dEventData data) {
         } else if (parse_on_off_command(command, DEMO_MODE_CMD,  &arg_parsing_success, &is_demo_mode, &message)) {
             command_success = arg_parsing_success;
         } else if (0 == strncmp(QUALIFICATION_START_PREFIX_CMD, command, strlen(QUALIFICATION_START_PREFIX_CMD))) {
-        	// Qualification has started. Stop the model task
-        	vTaskDelete(model_task_handle);
+        	// Qualification has started. Stop the model task. See Makefile comments about enabling IOTC_AWS_DEVICE_QUALIFICATION
+        	if (model_task_handle) {
+        		printf("Stopping the model task to start AWS Device Qualification");
+            	vTaskDelete(model_task_handle);
+        	} else {
+        		// Otherwise we will kill the app task with NULL being the argument
+        		printf("Model task is NULL. No task stopped.");
+        	}
+        	// Do not send the
         	return;
         } else {
             printf("Unknown command \"%s\"\n", command);
@@ -618,7 +625,6 @@ void app_task(void *pvParameters) {
     cyhal_gpio_write(CYBSP_USER_LED, false); // USER_LED is active low
 
     for (int i = 0; i < 10; i++) {
-        TaskHandle_t model_task_handle;
         xTaskCreate(app_model_task, "Model Task", 1024 * 8, &my_task, my_priority + 1, &model_task_handle);
         ulTaskNotifyTake(pdTRUE, 10000);
 
