@@ -625,16 +625,14 @@ void app_task(void *pvParameters) {
     cyhal_gpio_write(CYBSP_USER_LED, false); // USER_LED is active low
 
     for (int i = 0; i < 10; i++) {
-        xTaskCreate(app_model_task, "Model Task", 1024 * 8, &my_task, my_priority + 1, &model_task_handle);
-        ulTaskNotifyTake(pdTRUE, 10000);
-
         ret = iotconnect_sdk_connect();
         if (CY_RSLT_SUCCESS != ret) {
             printf("Failed to initialize the IoTConnect SDK. Error code: %lu\n", ret);
             goto exit_cleanup;
         }
         if (!model_task_handle) {
-        	xTaskCreate(app_model_task, "Model Task", 1024 * 8, &my_task, my_priority + 1, &model_task_handle);
+            xTaskCreate(app_model_task, "Model Task", 1024 * 8, &my_task, my_priority + 1, &model_task_handle);
+            ulTaskNotifyTake(pdTRUE, 10000);
         }
         int max_messages = is_demo_mode ? 6000 : 300;
         for (int j = 0; iotconnect_sdk_is_connected() && j < max_messages; j++) {
