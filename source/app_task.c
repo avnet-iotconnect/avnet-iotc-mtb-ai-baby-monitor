@@ -75,7 +75,7 @@
 #include "app_task.h"
 
 
-#define APP_VERSION "03.00.00"
+#define APP_VERSION "02.00.00"
 
 typedef enum UserInputYnStatus {
 	APP_INPUT_NONE = 0,
