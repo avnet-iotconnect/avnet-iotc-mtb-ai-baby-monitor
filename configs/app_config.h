@@ -8,15 +8,13 @@
 
 #include "iotconnect.h"
 
+// see IotConnectConnectionType: IOTC_CT_AWS or IOTC_CT_AZURE
+#define IOTCONNECT_CONNECTION_TYPE IOTC_CT_UNDEFINED
 #define IOTCONNECT_CPID "your-cpid"
 #define IOTCONNECT_ENV  "your-env"
 
-// from iotconnect.h IotConnectAuthType
-#define IOTCONNECT_AUTH_TYPE IOTC_AT_X509
-
+// prefix for the auto-generated name based on chip HWUID
 #define IOTCONNECT_DUID_PREFIX "psoc6-bm-"
-
-#define IOTCONNECT_CONNECTION_TYPE IOTC_CT_UNDEFINED
 
 /*
  PEM format certificate and private key
