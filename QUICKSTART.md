@@ -126,7 +126,7 @@ There will be errors displayed because the device still needs to be created in t
 ## 10. IoTConnect Device Template Setup
 
 An IoTConnect *Device Template* will need to be created or imported. This defines the data format the platform should expect from the device.
-* Download the premade  [Device Template](files/psoc6aibm-device-template.json?ld=1) (Right-click, Save As)
+* Download the premade  [Device Template](files/psoc6aibm-device-template.json?dl=1) (Right-click, Save As)
 
 * **Click** the Device icon and the "Device" sub-menu:  
 <img src="https://github.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/assets/40640041/57e0b0c8-08ba-4c3f-b33d-489d7d0db568" width=200>
