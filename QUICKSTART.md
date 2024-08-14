@@ -21,7 +21,7 @@ This guide has been tested with the following environment, but should work with 
 * Launch the **ModusToolbox Programmer** software and update the firmware if prompted
 * Next to the **Programmer** drop-down, ensure the item beginning with **KitProg3** is selected
 * Click the dropdown box next to **Board** and select the **CY8CKIT-062S2-AI** board.
-* Click **Open** and select the firmware .hex file downloaded (`avnet-iotc-mtb-ai-baby-monitor-v3.0.0.hex`)
+* Click **File -> Open** and select the firmware .hex file downloaded (`avnet-iotc-mtb-ai-baby-monitor-v3.0.0.hex`)
 * Click **Connect**
 * Click **Program**
 * Wait for the "Device programmed successfully" message to appear at the bottom
