@@ -164,7 +164,7 @@ An IoTConnect *Device Template* will need to be created or imported. This define
 
 ## 13. Visualize Data
 The data can be visualized by using the Dynamic Dashboard feature of IoTConnect.  
-A preconfigured example dashboard is available here: [psoc6aibm-example-dashboard.json](files/psoc6aibm-example-dashboard.json) (Right-click, Save As)
+A preconfigured example dashboard is available here: [psoc6aibm-example-dashboard.json](files/psoc6aibm-example-dashboard.json?raw=1) (Right-click, Save As)
 
 * **Download** the template then select "Create Dashboard" from the top of the IoTConnect portal
 * **Select** the "Import Dashboard" option and **Select** the template and device name used previously 
