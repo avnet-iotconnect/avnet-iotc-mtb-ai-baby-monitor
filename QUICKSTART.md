@@ -170,7 +170,7 @@ A preconfigured example dashboard is available here: [psoc6aibm-example-dashboar
 * **Select** the "Import Dashboard" option and **Select** the template and device name used previously 
 
 Congratulations, your sample dashboard should look similar to the one below:  
-<img width="700" alt="xensiv_pasco2_dashboard_image" src="https://github.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/assets/40640041/0d3047e4-bbe2-45a7-b959-88692919d4fa">
+<img width="700" alt="baby_cry_dashboard" src="files/baby_cry_dashboard.png">
 
 ## 14. Troubleshooting and Known Issues
 * The board may not be able to obtain time from the NTP server. Resetting the board should re-try the NTP connection and will likely succeed on the next try. 
