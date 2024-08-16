@@ -11,7 +11,7 @@ This project currently supports the [CY8CKIT-062S2-AI](https://www.infineon.com/
 
 The project supports only Eclipse with GCC_ARM compiler.
 
-## Quickstart Guide
+## QuickStart Guide
 
 If you wish to only evaluate this project, you can follow the [Quickstart Guide](QUICKSTART.md) to evaluate this application with IoTConnect.
 
