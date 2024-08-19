@@ -10,7 +10,7 @@ The project supports only Eclipse with GCC_ARM compiler.
 
 ## QuickStart Guide
 
-To quickly evaluate this project without compiling code follow the step-by-step instructions in the [Quickstart Guide](QUICKSTART.md).
+To quickly evaluate this project without compiling code follow the step-by-step instructions in the [QuickStart Guide](QUICKSTART.md).
 
 
 ## Building the Project
