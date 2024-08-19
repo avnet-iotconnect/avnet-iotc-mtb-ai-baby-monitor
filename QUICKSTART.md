@@ -1,9 +1,8 @@
 ## 1. Introduction
-This document outlines the steps of setting up the Infineon [CY8CKIT-062S2-AI](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062s2-ai/)
-to run this application on IoTConnect.
+This document outlines the steps of setting up the Infineon PSoC™ 6 Artificial Intelligence Evaluation Kit [CY8CKIT-062S2-AI](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062s2-ai/) with IoTConnect to quickly and easily demonstrate the Imagimob sound classification model.
 
 ## 2. Prerequisites
-This guide has been tested with the following environment, but should work with other operating systems.
+This guide has been tested with the following environment:
 * PC with Windows 10/11
 * USB-A to USB-C data cable
 * WiFi Network with Internet access
@@ -162,15 +161,26 @@ An IoTConnect *Device Template* will need to be created or imported. This define
 
 * Switch back to the IoTConnect GUI in your browser and **Click** "Live Data" on the left Device menu and verify telemetry is being populated
 
-## 13. Visualize Data
+## 13. Create/Import a Dashboard
 The data can be visualized by using the Dynamic Dashboard feature of IoTConnect.  
 A preconfigured example dashboard is available here: [psoc6aibm-example-dashboard.json](files/psoc6aibm-example-dashboard.json?raw=1) (**must** Right-Click the link, Save As)
 
 * **Download** the template then select "Create Dashboard" from the top of the IoTConnect portal
-* **Select** the "Import Dashboard" option and **Select** the template and device name used previously 
+* **Select** the "Import Dashboard" option and **Select** the *Template* and *Device Name* used previously 
+* **Input** a name and complete the import
 
-Congratulations, your sample dashboard should look similar to the one below:  
+You will now be in the dashboard edit mode. You can add/remove widgets or just click **Save** in the upper-right to exit the edit mode.
+The dashboard should similar to the one below:  
 <img width="700" alt="baby_cry_dashboard" src="files/baby_cry_dashboard.png">
 
-## 14. Troubleshooting and Known Issues
-* The board may not be able to obtain time from the NTP server. Resetting the board should re-try the NTP connection and will likely succeed on the next try. 
+## 14. Using the Demo
+With the evaluation board programed and powered-on, it will be constantly "listening" for the sound of a baby crying. All other sounds will be categorized as "unlabelled".
+The dashboard template come pre-populated with an embedded YouTube video of a baby crying.  Ensure your PC speakers are on and in proximity of the evaluation board and play the video.
+After a second or two, the detection should trigger and also display a confidence factor.
+
+## 15. Troubleshooting and Known Issues
+* The board may not be able to obtain time from the NTP server. Resetting the board should re-try the NTP connection and will likely succeed on the next try.
+
+## 16. Try More Examples
+Avnet as pre-enabled other Imagimob models to work with IoTConnect on this evaluation kit.  To flash a new model, use the link(s) below:
+* [IMU Model Example](https://github.com/avnet-iotconnect/avnet-iotc-mtb-ai-imu-example)
