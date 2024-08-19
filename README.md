@@ -1,6 +1,6 @@
 ## Introduction
 
-This demo project is the integration of the 
+This demo project is the integration of  
 Infineon's [Machine learning: Machine learning: Imagimob MTBML deployment](https://github.com/Infineon/mtb-example-ml-imagimob-mtbml-deploy/tree/release-v1.1.0)
 and Avnet's [IoTConnect ModusToolbox&trade; Basic Sample](https://github.com/avnet-iotconnect/avnet-iotc-mtb-basic-example/tree/release-v6.0.0). It demonstrates the ModusToolbox&trade; Machine Learning (MTBML) flow algorithm with "baby cry" model detection by using data from the pulse-density modulation to pulse-code modulation (PDM/PCM) which is sent to the model to detect whether a baby is crying or not.
 The AI model's recognized class is then reported to IoTConnect.
@@ -12,7 +12,6 @@ The project supports only Eclipse with GCC_ARM compiler.
 
 To quickly evaluate this project without compiling code follow the step-by-step instructions in the [QuickStart Guide](QUICKSTART.md).
 
-
 ## Building the Project
 
 [Watch an overview video](https://saleshosted.z13.web.core.windows.net/media/ifx/videos/IFX%20Modus%20with%20IoTConnect.mp4) of creating a new project with IoTConnect in ModusToolbox&trade; then follow the steps below.
@@ -23,7 +22,6 @@ To build the project, please refer to the
 - If using the model generator, you will need to install QEMU and set up the relevant environment variables per the [Machine Learning User Guide](https://www.infineon.com/dgdl/Infineon-Infineon-ModusToolbox_Machine_Learning_User_Guide-UserManual-v02_00-EN-UserManual-v09_00-EN.pdf?fileId=8ac78c8c83cd308101840de7e95a09df)
 - Over-the-air updates are not currently supported.
 - Use the [psoc6aibm-device-template.json Device Template](files/psoc6aibm-device-template.json) instead of the Basic Sample's template.
-
 
 ## Running the Demo
 
