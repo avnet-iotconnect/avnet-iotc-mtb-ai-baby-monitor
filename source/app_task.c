@@ -75,7 +75,11 @@
 #include "app_task.h"
 
 
-#define APP_VERSION "03.00.00"
+#define APP_VERSION "03.01.00"
+
+#define LABEL_BABY_CRY 	1
+#define LABEL_UNLABELED	0
+
 
 typedef enum UserInputYnStatus {
 	APP_INPUT_NONE = 0,
@@ -111,14 +115,16 @@ static const char* LABELS[IMAI_PDM_DATA_OUT_COUNT] = IMAI_PDM_SYMBOL_MAP;
 #endif
 // --------------
 
-// Telemetry-releate app variables:
+// Telemetry-related app variables:
 // There is a small chance that label and value will not be atomic as combined As this is a demo only,
 // for sake of simplicity, we will not be synchronizing tasks to solve for this issues.
-static size_t highest_confidence_index = 0;
-static float highest_confidence_value = 0;
+static bool is_baby_cry_detected = false;
+static float confidence_baby_cry = 0;
 static unsigned int highest_confidence_timestamp = 0; // when was the value recorded. Used in the logic to "hold" the value.
 
 static bool is_demo_mode = false;
+static int reporting_interval = 1000;
+static int detection_threshold = 85;
 
 static void on_connection_status(IotConnectConnectionStatus status) {
     // Add your own status handling
@@ -247,6 +253,9 @@ static void on_command(IotclC2dEventData data) {
     const char * const BOARD_STATUS_LED = "board-user-led";
     const char * const DEMO_MODE_CMD = "demo-mode";
     const char * const QUALIFICATION_START_PREFIX_CMD = "aws-qualification-start "; // with a space
+    const char * const SET_DETECTION_THRESHOLD = "set-detection-threshold "; // with a space
+    const char * const SET_REPORTING_INTERVAL = "set-reporting-interval "; // with a space
+
     bool command_success = false;
     const char * message = NULL;
 
@@ -256,7 +265,7 @@ static void on_command(IotclC2dEventData data) {
     if (command) {
         bool arg_parsing_success;
         printf("Command %s received with %s ACK ID\n", command, ack_id ? ack_id : "no");
-        // could be a command without acknowledgement, so ackID can be null
+        // could be a command without acknowledgment, so ackID can be null
         bool led_on;
         if (parse_on_off_command(command, BOARD_STATUS_LED, &arg_parsing_success, &led_on, &message)) {
             command_success = arg_parsing_success;
@@ -274,19 +283,39 @@ static void on_command(IotclC2dEventData data) {
         		// Otherwise we will kill the app task with NULL being the argument
         		printf("Model task is NULL. No task stopped.");
         	}
-        	// Do not send the
+        	// Get out early. Do not send the ack so we don't interfere with SDK taking over from here.
         	return;
+        } else if (0 == strncmp(SET_REPORTING_INTERVAL, command, strlen(SET_REPORTING_INTERVAL))) {
+        	int value = atoi(&command[strlen(SET_REPORTING_INTERVAL)]);
+        	if (0 == value) {
+                message = "Argument parsing error";
+        	} else {
+        		reporting_interval = value;
+        		printf("Reporting interval set to %d\n", value);
+        		message = "Reporting interval set";
+        		command_success =  true;
+        	}
+        } else if (0 == strncmp(SET_DETECTION_THRESHOLD, command, strlen(SET_DETECTION_THRESHOLD))) {
+        	int value = atoi(&command[strlen(SET_REPORTING_INTERVAL)]);
+        	if (0 == value) {
+                message = "Command argument parsing error";
+        	} else {
+        		detection_threshold = value;
+        		printf("Detection threshold set to %d\n", value);
+        		message = "Detection threshold set";
+        		command_success =  true;
+        	}
         } else {
             printf("Unknown command \"%s\"\n", command);
             message = "Unknown command";
         }
     } else {
-        printf("Failed to parse command. Command missing?\n");
+        printf("Failed to parse command. Command or argument missing?\n");
         message = "Parsing error";
     }
 
     // could be a command without ack, so ack ID can be null
-    // the user needs to enable acknowledgements in the template to get an ack ID
+    // the user needs to enable acknowledgments in the template to get an ack ID
     if (ack_id) {
         iotcl_mqtt_send_cmd_ack(
                 ack_id,
@@ -303,8 +332,8 @@ static cy_rslt_t publish_telemetry(void) {
     IotclMessageHandle msg = iotcl_telemetry_create();
     iotcl_telemetry_set_string(msg, "version", APP_VERSION);
     iotcl_telemetry_set_number(msg, "random", rand() % 100); // test some random numbers
-    iotcl_telemetry_set_string(msg, "class", LABELS[highest_confidence_index]);
-    iotcl_telemetry_set_number(msg, "confidence", highest_confidence_value);
+    iotcl_telemetry_set_bool(msg, "baby_cry_detected", is_baby_cry_detected);
+    iotcl_telemetry_set_number(msg, "confidence_baby_cry", confidence_baby_cry);
 
     iotcl_mqtt_send_telemetry(msg, false);
     iotcl_telemetry_destroy(msg);
@@ -343,33 +372,26 @@ static void app_model_output(void) {
         printf("Failed to allocate the model data buffer!\n");
         return;
     }
-	size_t candidate_index = 0;
-	float candidate_value = 0.0f;
-    for (uint8_t i = 0; i < model_output_size; i++)
-    {
-		float this_value = 100.0f * nn_float_buffer[i];
-		if (candidate_value < this_value) {
-			candidate_value = this_value;
-			candidate_index = i;
-		}
-		if (this_value > 25.0f) {
-			printf("%-8s: %6.2f%%\n", LABELS[i], this_value);
-		}
-    }
+
+    // the previous algorithm was flexible to detect any class.
+    // Keep "LABELS" around, so there's no compiler warning, in case if we ever return to it
+    (void) LABELS;
+
     unsigned int time_now = xTaskGetTickCount() * portTICK_PERIOD_MS;
-    if (candidate_index == 0) {
-    	// case where we detected unlabelled, but had an actual detection previously....
-    	// Wait until some time before resetting the value. We want to report the last actual detection for some time.
-    	if (highest_confidence_index != 0 && ((time_now - highest_confidence_timestamp) > 3000)) {
-			highest_confidence_index = 0; // Enough time has passed, so reset the value
-			highest_confidence_value = candidate_value;
-    	}
-    	// else leave the last value there and let it sit there for some time
-    	// while unlabelled class is being detected
-    } else {
-    	highest_confidence_index = candidate_index;
-    	highest_confidence_value = candidate_value;
+    confidence_baby_cry = 100.0f * nn_float_buffer[1];
+    if (confidence_baby_cry > (float) detection_threshold) {
+        printf("confidence: %3.1f%% (detected)\n", confidence_baby_cry);
+    	is_baby_cry_detected = true;
     	highest_confidence_timestamp = time_now;
+    } else {
+        printf("confidence: %3.1f%%\n", confidence_baby_cry);
+    	// case where we detected unlabeled, but had an actual detection previously....
+    	// Wait until some time before resetting the value. We want to report the last actual detection for some time.
+
+    	if (is_baby_cry_detected && ((time_now - highest_confidence_timestamp) > 3000)) {
+    		// ^ really becomes "was_baby_cry_detected"
+    		is_baby_cry_detected = false; // Enough time has passed, so reset the value
+    	}
     }
 
 #if !COMPONENT_ML_FLOAT32
@@ -640,7 +662,7 @@ void app_task(void *pvParameters) {
             if (result != CY_RSLT_SUCCESS) {
                 break;
             }
-            iotconnect_sdk_poll_inbound_mq(1000);
+            iotconnect_sdk_poll_inbound_mq(reporting_interval);
         }
         iotconnect_sdk_disconnect();
     }

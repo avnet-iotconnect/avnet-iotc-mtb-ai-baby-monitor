@@ -25,13 +25,30 @@ To build the project, please refer to the
 
 ## Running the Demo
 
-Once the board connects to IoTConnect, it will start processing microphone input and attempt to detect a baby crying sound. This can be tested by placing the board next to the PC speakers and playing an audio file like [this one](https://www.youtube.com/watch?v=j3glwtXrj0c).
+Once the board connects to IoTConnect, it will start processing microphone input and attempt to detect a baby crying sound. 
+This can be tested by placing the board next to the PC speakers and playing an audio file like [this one](https://www.youtube.com/watch?v=j3glwtXrj0c).
 
-The application sends data once every second, but the AI model recognizes sounds several times per second. Note the following conditions that will occur:
- * Sound not recognized: **class** value will be reported as **unlabelled**
- * Sound recognised as baby crying: **class** value will be reported as **baby_cry**
+The application sends data once every second by default (see commands below), but the AI model recognizes sounds several times per second. 
 
-The model will report different **confidence** percentages for each case, and the application will report the highest confidence class along with its confidence percentage.
+If a baby cry s recognized, the **baby_cry_detected** attribute will be reported as *true* for at least 3 seconds after the actual detection.
+
+The actual confidence percentage detected at the time of sending the telemetry data will be reported as **confidence_baby_cry**.
+
+Note that due to the fact that *confidence_baby_cry* "lingers" as true for up to 3 seconds so we do not miss a report,
+confidence value reported below the threshold may be reported along with confidence_baby_cry being *true*.
+This behavior is intended.
+
+One can also supply a smaller number than 1000 (milliseconds) as a parameter to the **set-reporting-interval** command 
+at runtime to increase the reporting interval. In that case the confidence value will be more in sync.
+
+The following commands can be sent to the device using the IoTConnect Web UI:
+
+| Command                     | Argument Type     | Description                                                                                              |
+|:----------------------------|-------------------|:---------------------------------------------------------------------------------------------------------|
+| `board-user-led`            | String (on/off)   | Turn the board LED on or off                                                                             |
+| `set-detection-threshold`   | Number (eg. 50)   | Set baby cry detection threshold (default 85) as percentage.                                             |
+| `set-reporting-interval`    | Number (eg. 4000) | Set telemetry reporting interval in milliseconds.  By default, the application will report every 1000ms. |
+| `demo-mode`                 | String (on/off)   | Enable demo mode. In this mode the application will send telemetry to IoTConnect for a longer period     |
 
 ## Additional Model Support
 

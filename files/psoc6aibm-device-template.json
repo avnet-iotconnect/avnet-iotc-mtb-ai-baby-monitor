@@ -6,26 +6,46 @@
         {
             "name": "version",
             "type": "STRING",
-            "description": null,
+            "description": "Current version of the application",
             "unit": null
         },
         {
-            "name": "class",
-            "type": "STRING",
-            "description": "Recognised AI class - baby_cry or unlabelled",
-            "unit": null
-        },
-        {
-            "name": "confidence",
+            "name": "random",
             "type": "INTEGER",
-            "description": "Confidence percentage for the recognised class",
+            "description": "A random number generated with each message for tracking telemetry activity",
             "unit": null
+        },
+        {
+            "name": "baby_cry_detected",
+            "type": "BOOLEAN",
+            "description": "True when confidence is above the threshold (85% default)",
+            "unit": null
+        },
+        {
+            "name": "confidence_baby_cry",
+            "type": "INTEGER",
+            "description": "Confidence percentage for detecting a baby cry",
+            "unit": "Percent"
         }
     ],
     "commands": [
         {
             "name": "board-user-led",
             "command": "board-user-led",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "set-detection-threshold",
+            "command": "set-detection-threshold",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "set-reporting-interval",
+            "command": "set-reporting-interval",
             "requiredParam": true,
             "requiredAck": true,
             "isOTACommand": false
