@@ -174,9 +174,17 @@ The dashboard should similar to the one below:
 <img width="700" alt="baby_cry_dashboard" src="files/baby_cry_dashboard.png">
 
 ## 14. Using the Demo
+
+### Exercising the Imagimob Model
 With the evaluation board programed and powered-on, it will be constantly "listening" for the sound of a baby crying. All other sounds will be categorized as "unlabelled".
 The dashboard template come pre-populated with an embedded YouTube video of a baby crying.  Ensure your PC speakers are on and in proximity of the evaluation board and play the video.
 After a second or two, the detection should trigger and also display a confidence factor.
+
+### Demonstrating Cloud-to-Device Communication
+IoTConnect supoorts sending commands from the platform back to the device. Using the "Device Command" widget, a command to toggle an LED ON/OFF from the IoTConnect Dashboard.  
+* Select "change-board-led" from the drop-down
+* Enter either "on" or "off" into the *Parameter Value* field
+* **Click** "Execute Command"
 
 ## 15. Troubleshooting and Known Issues
 * The board may not be able to obtain time from the NTP server. Resetting the board should re-try the NTP connection and will likely succeed on the next try.
