@@ -29,10 +29,11 @@
                         "key": "url"
                     },
                     "device": {
-                        "deviceGuid": "",
+                        "deviceGuid": "5A419822-0E8A-4D8A-A807-1DE2E08EC722",
                         "deviceName": "",
                         "imageurl": "",
-                        "key": "device"
+                        "key": "device",
+                        "deviceUniqueId": "psoc6-bm-f5af261f"
                     },
                     "telemetry": {
                         "deviceGuid": "",
@@ -45,8 +46,8 @@
             "properties": {
                 "x": "0",
                 "y": "0",
-                "w": "44",
-                "h": "6",
+                "w": "66",
+                "h": "8",
                 "i": "Image",
                 "minW": "5",
                 "minH": "5",
@@ -66,40 +67,70 @@
                 "contents": {
                     "Transformation": {
                         "device": {
-                            "deviceGuid": "8F44AF11-29C0-409A-B189-AADA0D826EEE",
-                            "deviceUniqueId": "psoc6-bc-f5af2e24"
+                            "deviceGuid": "5A419822-0E8A-4D8A-A807-1DE2E08EC722",
+                            "deviceUniqueId": "psoc6-bm-f5af261f"
                         },
                         "attributes": {
                             "attribute": [
                                 {
-                                    "attributeGuid": "9C5A805E-E4EA-49E7-9ABF-2B0AF0004311",
-                                    "attributeName": "confidence",
+                                    "attributeGuid": "1D455A1A-5AC3-4F2E-87AC-534F951BA9DB",
+                                    "attributeName": "confidence_baby_cry",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.0060301",
+                                    "deviceUpdatedDate": "2024-08-27T02:48:20.993Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.0060301"
+                                },
+                                {
+                                    "attributeGuid": "7ED43BCE-FFC6-477F-87CE-6420854379E5",
+                                    "attributeName": "random",
                                     "checked": "false",
                                     "dataType": "INTEGER",
-                                    "attributeLatestValue": "100",
-                                    "deviceUpdatedDate": "2024-07-11T05:00:55.973Z",
+                                    "attributeLatestValue": "7",
+                                    "deviceUpdatedDate": "2024-08-27T02:48:20.993Z",
                                     "gatewayUpdatedDate": "NA",
-                                    "attributeValue": "100"
+                                    "attributeValue": "7"
                                 },
                                 {
                                     "attributeGuid": "157FD718-1883-45B7-9FA2-933D9E3D0F28",
                                     "attributeName": "version",
                                     "checked": "false",
                                     "dataType": "STRING",
-                                    "attributeLatestValue": "02.01.00",
-                                    "deviceUpdatedDate": "2024-07-11T05:00:55.973Z",
+                                    "attributeLatestValue": "03.01.00",
+                                    "deviceUpdatedDate": "2024-08-27T02:48:20.993Z",
                                     "gatewayUpdatedDate": "NA",
-                                    "attributeValue": "02.01.00"
+                                    "attributeValue": "03.01.00"
+                                },
+                                {
+                                    "attributeGuid": "D6E2D11F-8693-4A53-B475-AFB2526BDDFC",
+                                    "attributeName": "confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2024-08-26T22:53:10.770Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "NA"
                                 },
                                 {
                                     "attributeGuid": "87269F19-5976-4CAF-AE0C-BA2B727468D1",
                                     "attributeName": "class",
-                                    "checked": "true",
+                                    "checked": "false",
                                     "dataType": "STRING",
-                                    "attributeLatestValue": "quiet",
-                                    "deviceUpdatedDate": "2024-07-11T05:00:55.973Z",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2024-08-26T22:45:36.953Z",
                                     "gatewayUpdatedDate": "NA",
-                                    "attributeValue": "quiet"
+                                    "attributeValue": "NA"
+                                },
+                                {
+                                    "attributeGuid": "1F1B13C7-8EDA-4D0A-82BE-E84A6BFD7C9C",
+                                    "attributeName": "baby_cry_detected",
+                                    "checked": "true",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "True",
+                                    "deviceUpdatedDate": "2024-08-27T02:48:20.993Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "True"
                                 }
                             ]
                         },
@@ -107,14 +138,14 @@
                         "transformations": [
                             {
                                 "condition": "eq",
-                                "conditionValue": "baby_cry",
+                                "conditionValue": "true",
                                 "type": "Url",
                                 "errors": "",
                                 "typeValue": "https://saleshosted.z13.web.core.windows.net/media/ifx/psoc6AI/crying.gif"
                             },
                             {
-                                "condition": "ne",
-                                "conditionValue": "baby_cry",
+                                "condition": "eq",
+                                "conditionValue": "false",
                                 "type": "Url",
                                 "errors": "",
                                 "typeValue": "https://saleshosted.z13.web.core.windows.net/media/ifx/psoc6AI/quiet1.gif"
@@ -126,7 +157,7 @@
             },
             "properties": {
                 "x": "0",
-                "y": "6",
+                "y": "8",
                 "w": "18",
                 "h": "17",
                 "i": "Transformation",
@@ -142,58 +173,88 @@
                 "background": "#fff",
                 "fontColor": "#343434",
                 "fontFamily": "Proxima Nova",
-                "fontSize": "18",
-                "title": "Cry vs. Quiet",
+                "fontSize": "20",
+                "title": "Baby Cry over 10 minutes",
                 "titleAlign": "",
                 "contents": {
                     "pie": {
                         "device": {
-                            "deviceGuid": "8F44AF11-29C0-409A-B189-AADA0D826EEE",
-                            "deviceUniqueId": "psoc6-bc-f5af2e24"
+                            "deviceGuid": "5A419822-0E8A-4D8A-A807-1DE2E08EC722",
+                            "deviceUniqueId": "psoc6-bm-f5af261f"
                         },
                         "attributes": {
                             "attribute": [
                                 {
-                                    "attributeGuid": "9C5A805E-E4EA-49E7-9ABF-2B0AF0004311",
-                                    "attributeName": "confidence",
+                                    "attributeGuid": "1D455A1A-5AC3-4F2E-87AC-534F951BA9DB",
+                                    "attributeName": "confidence_baby_cry",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.0060301",
+                                    "deviceUpdatedDate": "2024-08-27T02:48:20.993Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.0060301"
+                                },
+                                {
+                                    "attributeGuid": "7ED43BCE-FFC6-477F-87CE-6420854379E5",
+                                    "attributeName": "random",
                                     "checked": "false",
                                     "dataType": "INTEGER",
-                                    "attributeLatestValue": "99",
-                                    "deviceUpdatedDate": "2024-07-11T03:59:44.997Z",
+                                    "attributeLatestValue": "7",
+                                    "deviceUpdatedDate": "2024-08-27T02:48:20.993Z",
                                     "gatewayUpdatedDate": "NA",
-                                    "attributeValue": "99"
+                                    "attributeValue": "7"
                                 },
                                 {
                                     "attributeGuid": "157FD718-1883-45B7-9FA2-933D9E3D0F28",
                                     "attributeName": "version",
                                     "checked": "false",
                                     "dataType": "STRING",
-                                    "attributeLatestValue": "02.01.00",
-                                    "deviceUpdatedDate": "2024-07-11T03:59:44.997Z",
+                                    "attributeLatestValue": "03.01.00",
+                                    "deviceUpdatedDate": "2024-08-27T02:48:20.993Z",
                                     "gatewayUpdatedDate": "NA",
-                                    "attributeValue": "02.01.00"
+                                    "attributeValue": "03.01.00"
+                                },
+                                {
+                                    "attributeGuid": "D6E2D11F-8693-4A53-B475-AFB2526BDDFC",
+                                    "attributeName": "confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2024-08-26T22:53:10.770Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "NA"
                                 },
                                 {
                                     "attributeGuid": "87269F19-5976-4CAF-AE0C-BA2B727468D1",
                                     "attributeName": "class",
-                                    "checked": "true",
+                                    "checked": "false",
                                     "dataType": "STRING",
-                                    "attributeLatestValue": "quiet",
-                                    "deviceUpdatedDate": "2024-07-11T03:59:44.997Z",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2024-08-26T22:45:36.953Z",
                                     "gatewayUpdatedDate": "NA",
-                                    "attributeValue": "quiet"
+                                    "attributeValue": "NA"
+                                },
+                                {
+                                    "attributeGuid": "1F1B13C7-8EDA-4D0A-82BE-E84A6BFD7C9C",
+                                    "attributeName": "baby_cry_detected",
+                                    "checked": "true",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "True",
+                                    "deviceUpdatedDate": "2024-08-27T02:48:20.993Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "True"
                                 }
                             ]
                         },
                         "pieTime": "50",
                         "key": "pie",
-                        "recentEndPoints": "15"
+                        "recentEndPoints": "50"
                     }
                 }
             },
             "properties": {
                 "x": "18",
-                "y": "6",
+                "y": "8",
                 "w": "10",
                 "h": "8",
                 "i": "pie",
@@ -211,12 +272,12 @@
                 "background": "#ffffff",
                 "fontColor": "#343434",
                 "fontFamily": "Proxima Nova",
-                "fontSize": "18",
+                "fontSize": "20",
                 "title": "Baby Simulator",
                 "titleAlign": "center",
                 "contents": {
                     "embedded": {
-                        "link": "https://www.youtube.com/embed/F-Orz42dxLw?si=VBQ9pliBYsY69c7B",
+                        "link": "https://www.youtube.com/embed/quanKPuMklY?si=0nUCd7FA1B5V5QoB&loop=1&playlist=quanKPuMklY",
                         "refresh": "",
                         "key": "embedded"
                     }
@@ -224,12 +285,44 @@
             },
             "properties": {
                 "x": "28",
-                "y": "6",
+                "y": "8",
                 "w": "16",
                 "h": "12",
                 "i": "Embedded",
                 "minW": "15",
                 "minH": "12",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "E413CDFD-54EB-465E-BA97-CE610867E440",
+            "widgetProperties": {
+                "i": "DeviceCommand",
+                "background": "#fff",
+                "fontColor": "#000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "Cloud to Device Command",
+                "titleAlign": "",
+                "contents": {
+                    "deviceCommand": {
+                        "template": "9C745A92-93D2-46B6-A944-5C4CBBAC9707",
+                        "device": "psoc6-bm-f5af261f",
+                        "key": "deviceCommand",
+                        "deviceGuid": "5A419822-0E8A-4D8A-A807-1DE2E08EC722"
+                    }
+                }
+            },
+            "properties": {
+                "x": "44",
+                "y": "8",
+                "w": "22",
+                "h": "12",
+                "i": "DeviceCommand",
+                "minW": "22",
+                "minH": "10",
+                "maxH": "20",
+                "maxW": "35",
                 "isStatic": "false"
             }
         },
@@ -240,26 +333,48 @@
                 "background": "#fff",
                 "fontColor": "#343434",
                 "fontFamily": "Proxima Nova",
-                "fontSize": "24",
-                "title": "Confidence Factor",
+                "fontSize": "20",
+                "title": "Baby Cry Confidence %",
                 "titleAlign": "",
                 "contents": {
                     "gauge": {
                         "device": {
-                            "deviceGuid": "8F44AF11-29C0-409A-B189-AADA0D826EEE",
-                            "deviceUniqueId": "psoc6-bc-f5af2e24"
+                            "deviceGuid": "5A419822-0E8A-4D8A-A807-1DE2E08EC722",
+                            "deviceUniqueId": "psoc6-bm-f5af261f"
                         },
                         "attributes": {
-                            "attribute": {
-                                "attributeGuid": "9C5A805E-E4EA-49E7-9ABF-2B0AF0004311",
-                                "attributeName": "confidence",
-                                "checked": "true",
-                                "dataType": "INTEGER",
-                                "attributeLatestValue": "99",
-                                "deviceUpdatedDate": "2024-07-11T03:59:44.997Z",
-                                "gatewayUpdatedDate": "NA",
-                                "attributeValue": "99"
-                            }
+                            "attribute": [
+                                {
+                                    "attributeGuid": "1D455A1A-5AC3-4F2E-87AC-534F951BA9DB",
+                                    "attributeName": "confidence_baby_cry",
+                                    "checked": "true",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.0002892",
+                                    "deviceUpdatedDate": "2024-08-27T02:16:10.970Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.0002892"
+                                },
+                                {
+                                    "attributeGuid": "7ED43BCE-FFC6-477F-87CE-6420854379E5",
+                                    "attributeName": "random",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "43",
+                                    "deviceUpdatedDate": "2024-08-27T02:16:10.970Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "43"
+                                },
+                                {
+                                    "attributeGuid": "D6E2D11F-8693-4A53-B475-AFB2526BDDFC",
+                                    "attributeName": "confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2024-08-26T22:53:10.770Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "NA"
+                                }
+                            ]
                         },
                         "minValue": "0",
                         "maxValue": "100",
@@ -290,7 +405,7 @@
             },
             "properties": {
                 "x": "18",
-                "y": "14",
+                "y": "16",
                 "w": "10",
                 "h": "9",
                 "i": "gauge",
@@ -302,98 +417,223 @@
             }
         },
         {
-            "widgetGuid": "189602F6-0456-4573-9EFA-F6C6B27D7871",
+            "widgetGuid": "57E7E7D3-DE04-4CE3-84C3-63D9CC473F75",
             "widgetProperties": {
-                "i": "Notifications",
-                "background": "#fff",
-                "fontColor": "#343434",
+                "i": "HyperLink",
+                "background": "#78b6ff",
+                "fontColor": "#000000",
                 "fontFamily": "Proxima Nova",
-                "fontSize": "18",
-                "title": "Notifications",
-                "titleAlign": "",
+                "fontSize": "20",
+                "title": "CY8CKIT-062S2-AI Product Page",
+                "titleAlign": "center",
                 "contents": {
-                    "numberOfRow": {
-                        "row": "10"
-                    },
-                    "matchedDate": {
-                        "fontColor": "#2e71be",
-                        "fontFamily": "Proxima Nova",
-                        "fontSize": "16",
-                        "title": "Date",
-                        "contentTitle": "Matched Date"
-                    },
-                    "eventName": {
-                        "fontColor": "#2e71be",
-                        "fontFamily": "Proxima Nova",
-                        "fontSize": "16",
-                        "title": "Event Name",
-                        "contentTitle": "Event Name"
-                    },
-                    "matchedCondition": {
-                        "fontColor": "#2e71be",
-                        "fontFamily": "Proxima Nova",
-                        "fontSize": "16",
-                        "title": "Condition",
-                        "contentTitle": "Matched Condition"
-                    },
-                    "uniqueId": {
-                        "fontColor": "#2e71be",
-                        "fontFamily": "Proxima Nova",
-                        "fontSize": "16",
-                        "title": "Resource",
-                        "contentTitle": "Resource"
-                    },
-                    "severity": {
-                        "fontColor": "#2e71be",
-                        "fontFamily": "Proxima Nova",
-                        "fontSize": "16",
-                        "title": "Severity",
-                        "contentTitle": "Severity"
+                    "hyperlink": {
+                        "link": "https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062s2-ai/",
+                        "key": "hyperlink"
                     }
                 }
             },
             "properties": {
                 "x": "28",
-                "y": "18",
-                "w": "16",
-                "h": "15",
-                "i": "Notifications",
-                "minW": "10",
-                "minH": "5",
-                "maxH": "902",
-                "maxW": "838",
+                "y": "20",
+                "w": "15",
+                "h": "2",
+                "i": "HyperLink",
+                "minW": "5",
+                "minH": "2",
+                "maxH": "2",
                 "isStatic": "false"
             }
         },
         {
-            "widgetGuid": "E413CDFD-54EB-465E-BA97-CE610867E440",
+            "widgetGuid": "57E7E7D3-DE04-4CE3-84C3-63D9CC473F75",
             "widgetProperties": {
-                "i": "DeviceCommand",
-                "background": "#fff",
-                "fontColor": "#000",
+                "i": "HyperLink",
+                "background": "#78b6ff",
+                "fontColor": "#000000",
                 "fontFamily": "Proxima Nova",
-                "fontSize": "18",
-                "title": "Device Command",
-                "titleAlign": "",
+                "fontSize": "20",
+                "title": "GitHub Source Code",
+                "titleAlign": "center",
                 "contents": {
-                    "deviceCommand": {
-                        "template": "9C745A92-93D2-46B6-A944-5C4CBBAC9707",
-                        "device": "psoc6-bc-f5af2e24",
-                        "key": "deviceCommand",
-                        "deviceGuid": "8F44AF11-29C0-409A-B189-AADA0D826EEE"
+                    "hyperlink": {
+                        "link": "https://github.com/avnet-iotconnect/avnet-iotc-mtb-ai-baby-monitor/",
+                        "key": "hyperlink"
                     }
                 }
             },
             "properties": {
-                "x": "0",
-                "y": "23",
-                "w": "28",
-                "h": "10",
-                "i": "DeviceCommand",
-                "minW": "22",
-                "minH": "10",
-                "maxH": "20",
-                "maxW": "35",
+                "x": "43",
+                "y": "20",
+                "w": "15",
+                "h": "2",
+                "i": "HyperLink",
+                "minW": "5",
+                "minH": "2",
+                "maxH": "2",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "F7979C1B-8637-4667-90A2-6961052C6E21",
+            "widgetProperties": {
+                "i": "Live",
+                "background": "#ffffff",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "20",
+                "title": "FW Version",
+                "titleAlign": "",
+                "contents": {
+                    "attributeValue": {
+                        "attributeName": "version",
+                        "key": "attributeValue"
+                    },
+                    "attributeTime": {
+                        "attributeName": "version",
+                        "key": "attributeTime"
+                    },
+                    "live": {
+                        "device": {
+                            "deviceGuid": "5A419822-0E8A-4D8A-A807-1DE2E08EC722",
+                            "deviceUniqueId": "psoc6-bm-f5af261f"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "1D455A1A-5AC3-4F2E-87AC-534F951BA9DB",
+                                    "attributeName": "confidence_baby_cry",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.0052749",
+                                    "deviceUpdatedDate": "2024-08-27T00:40:57.487Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.0052749"
+                                },
+                                {
+                                    "attributeGuid": "7ED43BCE-FFC6-477F-87CE-6420854379E5",
+                                    "attributeName": "random",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "46",
+                                    "deviceUpdatedDate": "2024-08-27T00:40:57.487Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "46"
+                                },
+                                {
+                                    "attributeGuid": "157FD718-1883-45B7-9FA2-933D9E3D0F28",
+                                    "attributeName": "version",
+                                    "checked": "true",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "03.01.00",
+                                    "deviceUpdatedDate": "2024-08-27T00:40:57.487Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "03.01.00"
+                                },
+                                {
+                                    "attributeGuid": "D6E2D11F-8693-4A53-B475-AFB2526BDDFC",
+                                    "attributeName": "confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2024-08-26T22:53:10.770Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "NA"
+                                },
+                                {
+                                    "attributeGuid": "87269F19-5976-4CAF-AE0C-BA2B727468D1",
+                                    "attributeName": "class",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2024-08-26T22:45:36.953Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "NA"
+                                },
+                                {
+                                    "attributeGuid": "1F1B13C7-8EDA-4D0A-82BE-E84A6BFD7C9C",
+                                    "attributeName": "baby_cry_detected",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2024-08-27T00:40:57.487Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                }
+                            ]
+                        },
+                        "rules": "",
+                        "key": "live"
+                    }
+                }
+            },
+            "properties": {
+                "x": "59",
+                "y": "20",
+                "w": "7",
+                "h": "4",
+                "i": "Live",
+                "minW": "7",
+                "minH": "4",
+                "maxH": "4",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "57E7E7D3-DE04-4CE3-84C3-63D9CC473F75",
+            "widgetProperties": {
+                "i": "HyperLink",
+                "background": "#78b6ff",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "20",
+                "title": "Avnet Design Hub",
+                "titleAlign": "center",
+                "contents": {
+                    "hyperlink": {
+                        "link": "https://www.avnet.com/wps/portal/us/design/cy8ckit-062s2-ai-evaluation-kit-based-on-infineon",
+                        "key": "hyperlink"
+                    }
+                }
+            },
+            "properties": {
+                "x": "28",
+                "y": "22",
+                "w": "15",
+                "h": "2",
+                "i": "HyperLink",
+                "minW": "5",
+                "minH": "2",
+                "maxH": "2",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "57E7E7D3-DE04-4CE3-84C3-63D9CC473F75",
+            "widgetProperties": {
+                "i": "HyperLink",
+                "background": "#78b6ff",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "20",
+                "title": "IoTConnect  Home",
+                "titleAlign": "center",
+                "contents": {
+                    "hyperlink": {
+                        "link": "https://www.iotconnect.io/",
+                        "key": "hyperlink"
+                    }
+                }
+            },
+            "properties": {
+                "x": "43",
+                "y": "22",
+                "w": "15",
+                "h": "2",
+                "i": "HyperLink",
+                "minW": "5",
+                "minH": "2",
+                "maxH": "2",
                 "isStatic": "false"
             }
         }

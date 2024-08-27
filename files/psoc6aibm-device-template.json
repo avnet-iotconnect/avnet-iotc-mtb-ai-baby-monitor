@@ -1,45 +1,63 @@
 {
-    "code": "psoc6aibm",
-    "name": "psoc6aibm",
+    "code": "psoc6aibc",
+    "name": "psoc6aibc",
     "authType": 2,
     "attributes": [
         {
             "name": "version",
-            "type": "STRING",
+            "type": "STRING"
+        },
+        {
+            "name": "random",
+            "type": "INTEGER",
             "description": null,
             "unit": null
         },
         {
-            "name": "class",
-            "type": "STRING",
-            "description": "Recognised AI class - baby_cry or unlabelled",
+            "name": "baby_cry_detected",
+            "type": "BOOLEAN",
+            "description": null,
             "unit": null
         },
         {
-            "name": "confidence",
-            "type": "INTEGER",
-            "description": "Confidence percentage for the recognised class",
-            "unit": null
+            "name": "confidence_baby_cry",
+            "type": "DECIMAL",
+            "description": null,
+            "unit": "%"
         }
     ],
     "commands": [
-        {
-            "name": "board-user-led",
-            "command": "board-user-led",
-            "requiredParam": true,
-            "requiredAck": true,
-            "isOTACommand": false
-        },
         {
             "name": "demo-mode",
             "command": "demo-mode",
             "requiredParam": true,
             "requiredAck": true,
             "isOTACommand": false
+        },
+        {
+            "name": "board-user-led",
+            "command": "board-user-led",
+            "requiredParam": true,
+            "isOTACommand": false,
+            "requiredAck": true
+        },
+        {
+            "name": "Class Reporting Interval",
+            "command": "set-reporting-interval",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "set-detection-threshold",
+            "command": "set-detection-threshold",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
         }
     ],
     "messageVersion": "2.1",
-    "msgCode": "XG4EJRH",
+    "msgCode": "XG4EJNE",
     "greenGrass": "0",
     "wireless": "0",
     "properties": {
