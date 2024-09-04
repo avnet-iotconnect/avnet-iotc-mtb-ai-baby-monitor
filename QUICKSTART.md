@@ -152,7 +152,8 @@ An IoTConnect *Device Template* will need to be created or imported. This define
 
 ## 12. Verify Connection and Data
 
-* Switch to the Serial Terminal application and Reset the board
+* Switch to the Serial Terminal application windows
+* Press the *Reset* button on the board
 * After a few seconds, the device will connect, and begin sending telemetry packets similar to the example below:
 
 ```
