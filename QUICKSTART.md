@@ -157,7 +157,7 @@ An IoTConnect *Device Template* will need to be created or imported. This define
 * After a few seconds, the device will connect, and begin sending telemetry packets similar to the example below:
 
 ```
->: {"d":[{"d":{"version":"02.00.00","random":49,"class":"unlabelled","confidence":99.886238098144531}}]}
+>: {"d":[{"d":{"version":"03.01.00","random":79,"baby_cry_detected":false,"confidence_baby_cry":3.5081654914392857e-08}}]}
 ```
 
 * Switch back to the IoTConnect GUI in your browser and **Click** "Live Data" on the left Device menu and verify telemetry is being populated
