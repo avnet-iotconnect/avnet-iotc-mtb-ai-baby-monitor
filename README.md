@@ -1,7 +1,7 @@
 ## Introduction
 
 This demo project is the integration of  
-Infineon's [Machine learning: Machine learning: Imagimob MTBML deployment](https://github.com/Infineon/mtb-example-ml-imagimob-mtbml-deploy/tree/release-v1.1.0)
+Infineon's [Machine learning: Imagimob MTBML deployment](https://github.com/Infineon/mtb-example-ml-imagimob-mtbml-deploy/tree/release-v1.1.0)
 and Avnet's [IoTConnect ModusToolbox&trade; Basic Sample](https://github.com/avnet-iotconnect/avnet-iotc-mtb-basic-example/tree/release-v6.0.0). It demonstrates the ModusToolbox&trade; Machine Learning (MTBML) flow algorithm with "baby cry" model detection by using data from the pulse-density modulation to pulse-code modulation (PDM/PCM) which is sent to the model to detect whether a baby is crying or not.
 The AI model's recognized class is then reported to IoTConnect.
 
