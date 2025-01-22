@@ -31,6 +31,8 @@ To build the project, please refer to the
 - If using the model generator, you will need to install QEMU and set up the relevant environment variables per the [Machine Learning User Guide](https://www.infineon.com/dgdl/Infineon-Infineon-ModusToolbox_Machine_Learning_User_Guide-UserManual-v02_00-EN-UserManual-v09_00-EN.pdf?fileId=8ac78c8c83cd308101840de7e95a09df)
 - Over-the-air updates are not currently supported.
 - Use the [psoc6aibc-device-template.json Device Template](https://raw.githubusercontent.com/avnet-iotconnect/avnet-iotc-mtb-ai-baby-monitor/main/files/psoc6aibc-device-template.json) instead of the Basic Sample's template.
+  **Note:** Right-click the link and select "Save Link As" to download the file.
+
 
 ## Running the Demo
 
