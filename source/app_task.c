@@ -75,7 +75,7 @@
 #include "app_task.h"
 
 
-#define APP_VERSION "03.01.01"
+#define APP_VERSION "03.02.00"
 
 #define LABEL_BABY_CRY 	1
 #define LABEL_UNLABELED	0
