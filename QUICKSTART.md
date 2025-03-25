@@ -40,11 +40,11 @@ This guide has been tested with the following environment:
 * After setup, connect and reset the board.
 
 ## 7. Cloud Account Setup
-An /IOTCONNECT account is required.  If you need to create an account, a free trial subscription is available.
+An /IOTCONNECT account with AWS backend is required.  If you need to create an account, a free trial subscription is available.
+The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
 
-Select one of the two implementations of /IOTCONNECT:
-* [AWS Version](https://subscription.iotconnect.io/subscribe?cloud=aws)  (Recommended)
-* [Azure Version](https://subscription.iotconnect.io/subscribe?cloud=azure)  
+* Option #1 [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) **(Recommended)** - 60 day trial; AWS account creation required
+* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no credit card required
 
 > [!NOTE]
 > Be sure to check any SPAM folder for the temporary password after registering.
@@ -52,9 +52,8 @@ Select one of the two implementations of /IOTCONNECT:
 See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details on the trial.
 
 ## 8. Acquire /IOTCONNECT Account Information
-Login to /IOTCONNECT using the corresponding link below to the version for which you registered:  
-* [/IOTCONNECT on AWS](https://console.iotconnect.io) (Recommended)
-* [/IOTCONNECT on Azure](https://portal.iotconnect.io)
+Login to /IOTCONNECT using the using the link below:  
+[https://console.iotconnect.io](https://console.iotconnect.io)
 
 The Company ID (**CPID**) and Environment (**ENV**) variables identifying your /IOTCONNECT account must be configured for the device.
 * Take note of these values for later reference located in the "Settings" -> "Key Vault" section of the platform. See image below.
