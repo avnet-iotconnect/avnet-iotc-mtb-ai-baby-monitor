@@ -1,5 +1,5 @@
 ## 1. Introduction
-This document outlines the steps of setting up the Infineon PSoC™ 6 Artificial Intelligence Evaluation Kit [CY8CKIT-062S2-AI](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062s2-ai/) with /IOTCONNECT to quickly and easily demonstrate the Imagimob sound classification model.
+This document outlines the steps of setting up the Infineon PSoC™ 6 Artificial Intelligence Evaluation Kit [CY8CKIT-062S2-AI](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062s2-ai/) with /IOTCONNECT to quickly and easily demonstrate Infineon's AI sound classification model by Imagimob.
 
 ## 2. Prerequisites
 This guide has been tested with the following environment:
@@ -8,7 +8,7 @@ This guide has been tested with the following environment:
 * WiFi Network with Internet access
 * A serial terminal application such as [Tera Term](https://sourceforge.net/projects/tera-term/) (Recommended) or a browser-based version such as [Google Chrome Labs Serial Terminal](https://googlechromelabs.github.io/serial-terminal/)
 * A registered [myInfineon Account](https://www.infineon.com/sec/login)
-* PSoC™ 6 Artificial Intelligence Evaluation Kit (CY8CKIT-062S2-AI)
+* PSoC™ 6 Artificial Intelligence Evaluation Kit (CY8CKIT-062S2-AI) [Buy Now](https://www.avnet.com/shop/us/products/infineon/cy8ckit-062s2-ai-3074457345659496631/)
 
 ## 3. Hardware Setup
 * Connect the  board to a USB port your PC. A new USB device should be detected.
