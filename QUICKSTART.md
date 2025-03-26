@@ -11,7 +11,8 @@ This guide has been tested with the following environment:
 * PSoC™ 6 Artificial Intelligence Evaluation Kit (CY8CKIT-062S2-AI) [Buy Now](https://www.avnet.com/shop/us/products/infineon/cy8ckit-062s2-ai-3074457345659496631/)
 
 ## 3. Hardware Setup
-* Connect the  board to a USB port your PC. A new USB device should be detected.
+* Connect your PC to the **J1** USB header on the board. A new USB device should be detected.
+![img](/files/psoc6_J1.png)
 
 ## 4. Flash the Firmware
 * **Download** and **Install** the latest (tested with v5.2) [ModusToolbox Programming Tools](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxprogtools) (Right-Click, "Open link in new tab")
@@ -73,7 +74,7 @@ The Company ID (**CPID**) and Environment (**ENV**) variables identifying your /
 > [!NOTE] 
 > To change an existing configuration reset the board and press `y` and then `ENTER` when prompted.
 
-* Enter the **Platform** for which you subscribed: `aws` (for AWS) or `az` (for Azure)
+* Enter the **Platform** for which you subscribed: `aws` (for AWS)
 * Enter the **CPID** acquired from the key vault in Step 8
 * Enter the **ENV** (Environment) acquired from the key vault in Step 8
 * Enter your **WiFi SSID**
