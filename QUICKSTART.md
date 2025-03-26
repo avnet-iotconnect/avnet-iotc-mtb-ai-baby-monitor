@@ -75,8 +75,8 @@ The Company ID (**CPID**) and Environment (**ENV**) variables identifying your /
 > To change an existing configuration reset the board and press `y` and then `ENTER` when prompted.
 
 * Enter the **Platform** for which you subscribed: `aws` (for AWS)
-* Enter the **CPID** acquired from the key vault in Step 8
-* Enter the **ENV** (Environment) acquired from the key vault in Step 8
+* Enter the **CPID** (Company ID) acquired from the key vault in Step 8
+* Enter the **ENV** (Environment) acquired from the key vault in Step 8 (`prod`)
 * Enter your **WiFi SSID**
 * Enter your **WiFi Password**
 
