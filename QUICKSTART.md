@@ -193,3 +193,7 @@ After a second or two, the detection should trigger and also display a confidenc
 ## 16. Try More Examples
 Avnet as pre-enabled other Imagimob models to work with /IOTCONNECT on this evaluation kit.  To flash a new model, use the link(s) below:
 * [IMU Model Example](https://github.com/avnet-iotconnect/avnet-iotc-mtb-ai-imu-example)
+
+## 17. Resources
+Watch a webinar on this topic:
+[QuickStart Guide: Sound Recognition (Baby Cry) Demo](https://players.brightcove.net/4598493563001/BkZJhSKu_default/index.html?videoId=6362559436112)
