@@ -196,4 +196,5 @@ Avnet as pre-enabled other Imagimob models to work with /IOTCONNECT on this eval
 
 ## 17. Resources
 Watch a webinar on this topic:
-[QuickStart Guide: Sound Recognition (Baby Cry) Demo](https://players.brightcove.net/4598493563001/BkZJhSKu_default/index.html?videoId=6362559436112)
+[QuickStart Guide: Sound Recognition (Baby Cry) Demo](https://players.brightcove.net/4598493563001/BkZJhSKu_default/index.html?videoId=6362559436112)  
+[Webinar Slides: PSOC 6 April 2025](https://github.com/avnet-iotconnect/avnet-iotc-mtb-ai-baby-monitor/blob/main/files/Avnet%20Webinar%20-%20PSOC%206%20April%202025.pdf)
