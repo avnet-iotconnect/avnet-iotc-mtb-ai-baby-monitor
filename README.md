@@ -13,11 +13,16 @@ To quickly evaluate this project without compiling code follow the step-by-step 
 
 ## Supported Toolchains (make variable 'TOOLCHAIN')
 
-* GNU Arm® Embedded Compiler (GCC_ARM) - Default value of TOOLCHAIN
+> [!IMPORTANT]
+> As of 8/8/2025 the older version v3.2.0 of this application and older will not work with any MTB Tools versions 
+> Due to a problem with incompatibility with retarget-io and the latest BSP.
+> Please use v3.3.0 and later versions.
+
+* GNU Arm® Embedded Compiler (GCC_ARM) Version 11.3.1 (14 should work as well) - Default value of TOOLCHAIN
 
 ## Supported Boards
 
-The code has been developed and tested with MTB 3.3, with VsCode, and the board below:
+The code has been developed and tested with MTB 3.5, with VsCode, and the board below:
 
 - [PSoC&trade; 6 CY8CKIT-062S2-AI](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062s2-ai/)(`CY8CKIT-062S2-AI`)
 
