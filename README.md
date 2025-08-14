@@ -14,7 +14,7 @@ To quickly evaluate this project without compiling code follow the step-by-step 
 ## Supported Toolchains (make variable 'TOOLCHAIN')
 
 > [!IMPORTANT]
-> As of 8/8/2025 the older version v3.2.0 of this application and older will not work with any MTB Tools versions 
+> As of 8/8/2025, the older version v3.2.0 of this application will not work with any MTB Tools versions 
 > Due to a problem with incompatibility with retarget-io and the latest BSP.
 > Please use v3.3.0 and later versions.
 
